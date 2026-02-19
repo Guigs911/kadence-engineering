@@ -158,15 +158,15 @@ function Nav() {
       padding: `0 ${S.gutter}`, height: "72px",
       background: scrolled ? "rgba(244,245,242,0.97)" : "transparent",
       backdropFilter: scrolled ? "blur(16px)" : "none",
-      borderBottom: scrolled ? `1px solid ${T.border}` : "1px solid transparent",
+      borderBottom: scrolled ? `1px solid ${T.border}` : "1px solid rgba(255,255,255,0.18)",
       transition: "all 0.4s ease",
     }}>
       <div style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 800, fontSize: "19px", letterSpacing: "-0.02em",
+        fontWeight: 800, fontSize: "30px", letterSpacing: "-0.02em",
         color: logoColor, transition: "color 0.4s",
       }}>
-        Kadence
+        Kadence<span style={{ color: scrolled ? T.sage : "rgba(121,164,126,0.75)", fontWeight: 600, transition: "color 0.4s" }}> Safety</span>
       </div>
 
       <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "36px" }}>
@@ -185,7 +185,7 @@ function NavLink({ label, scrolled }) {
     <a href="#"
       onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
       style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "14px",
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "16px",
         color: h
           ? (scrolled ? T.forest : "#ffffff")
           : (scrolled ? T.muted : "rgba(255,255,255,0.68)"),
@@ -201,8 +201,8 @@ function NavCTA({ scrolled }) {
     <button
       onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
       style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px",
-        padding: "9px 22px", borderRadius: "100px", cursor: "pointer",
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "15px",
+        padding: "10px 26px", borderRadius: "100px", cursor: "pointer",
         background: h ? T.sage : (scrolled ? T.forest : "rgba(255,255,255,0.12)"),
         color: "#ffffff",
         border: scrolled ? "none" : "1px solid rgba(255,255,255,0.28)",
@@ -397,43 +397,47 @@ function FocusCard({ item, delay }) {
       <div
         onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
         style={{
-          borderRadius: "16px", padding: "36px",
-          background: h ? T.bgCard : T.bgPage,
-          border: `1px solid ${h ? T.sageBorder : T.border}`,
-          boxShadow: h ? "0 8px 28px rgba(35,51,41,0.08)" : "none",
+          borderRadius: "20px", padding: "32px 32px 38px",
+          background: T.bgCard,
+          border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
+          boxShadow: h ? "0 12px 40px rgba(35,51,41,0.10)" : "0 2px 12px rgba(35,51,41,0.05)",
           transition: "all 0.32s ease", cursor: "default",
           position: "relative", overflow: "hidden",
           height: "100%",
         }}
       >
-        {/* Number */}
-        <div style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-          fontSize: "11px", letterSpacing: "0.1em", color: T.sage, marginBottom: "18px",
-        }}>{item.num}</div>
+        {/* Title + rule pinned to top; body pushed to fixed distance via flex */}
+        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          <div style={{ minHeight: "80px" }}>
+            <h3 style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
+              fontSize: "clamp(20px, 2.6vw, 28px)", color: T.sage,
+              letterSpacing: "-0.02em", lineHeight: 1.25,
+              margin: "0 0 10px", whiteSpace: "pre-line",
+            }}>{item.title}</h3>
 
-        {/* Icon chip */}
-        <div style={{
-          width: "44px", height: "44px", borderRadius: "10px",
-          background: h ? "rgba(121,164,126,0.14)" : "rgba(121,164,126,0.08)",
-          border: `1px solid ${h ? T.sageBorder : "rgba(121,164,126,0.18)"}`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: T.sage, marginBottom: "20px", transition: "all 0.28s ease",
-        }}>{item.icon}</div>
+            {/* Sage underline rule */}
+            <div style={{
+              width: h ? "48px" : "32px",
+              height: "2px",
+              background: T.sage,
+              borderRadius: "2px",
+              marginBottom: "14px",
+              transition: "width 0.32s ease",
+            }} />
+          </div>
 
-        <h3 style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-          fontSize: "17px", color: T.forest, margin: "0 0 10px", lineHeight: 1.35,
-        }}>{item.title}</h3>
-        <p style={{
-          fontFamily: "'Inter', sans-serif", fontWeight: 300,
-          fontSize: "14px", color: T.muted, margin: 0, lineHeight: 1.8,
-        }}>{item.body}</p>
+          <p style={{
+            fontFamily: "'Inter', sans-serif", fontWeight: 400,
+            fontSize: "16px", color: T.muted, margin: 0, lineHeight: 1.85,
+          }}>{item.body}</p>
+        </div>
 
+        {/* Subtle corner glow */}
         <div style={{
-          position: "absolute", top: 0, right: 0, width: "100px", height: "100px",
-          background: "radial-gradient(circle at top right, rgba(121,164,126,0.06), transparent 68%)",
-          opacity: h ? 1 : 0, transition: "opacity 0.4s", pointerEvents: "none",
+          position: "absolute", top: 0, right: 0, width: "140px", height: "140px",
+          background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)",
+          opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none",
         }} />
       </div>
     </Reveal>
@@ -447,25 +451,30 @@ function Focus() {
         <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
           <Reveal>
             <div style={{ marginBottom: "56px" }}>
-              <Eyebrow>Our Focus</Eyebrow>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
                 fontSize: "clamp(28px, 3.8vw, 46px)",
                 color: T.forest, letterSpacing: "-0.022em",
                 lineHeight: 1.14, margin: "0 0 16px", maxWidth: "520px",
               }}>
-                Where We Partner
+                Our Focus
               </h2>
               <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                fontSize: "16px", color: T.muted, maxWidth: "440px", lineHeight: 1.8,
+                fontFamily: "'Inter', sans-serif", fontWeight: 400,
+                fontSize: "16px", color: T.forest, maxWidth: "900px", lineHeight: 1.8,
+                opacity: 0.72, whiteSpace: "nowrap",
               }}>
-                We are looking to partner with exceptional businesses and entrepreneurs operating in the following areas:
+                We are looking to partner with{" "}
+                <span style={{
+                  color: "#3d5c45",
+                  fontWeight: 700,
+                }}>exceptional businesses and entrepreneurs</span>
+                {" "}operating in the following areas:
               </p>
             </div>
           </Reveal>
 
-          <div className="four-col" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "14px" }}>
+          <div className="four-col" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", columnGap: "14px", rowGap: "28px" }}>
             {focusItems.map((item, i) => (
               <FocusCard key={item.num} item={item} delay={i * 0.07} />
             ))}
@@ -480,63 +489,84 @@ function Focus() {
 /* ── BENEFITS ───────────────────────────────────────────────── */
 const benefits = [
   {
-    num: "01",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    ),
     title: "Central Services To Free Up Time on What Really Matters",
-    body: "We will remove your administrative burden by centralising back-office functions, allowing you to focus entirely on client service excellence and team leadership.",
+    body: "We remove your administrative burden by centralising back-office functions, allowing you to focus entirely on client service excellence and team leadership.",
   },
   {
-    num: "02",
-    title: "Technological Support for Digitalization and Growth",
-    body: "We provide modern software and tech stack to every company in the group, enabling you and your teams to work more efficiently, securely, and to the highest standards.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
+        <rect x="7" y="7" width="10" height="10" rx="1"/>
+        <path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/>
+      </svg>
+    ),
+    title: "Technological Support for Digitalisation and Growth",
+    body: "We provide a modern software and tech stack to every company in the group, enabling your teams to work more efficiently, securely, and to the highest standards.",
   },
   {
-    num: "03",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
+        <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
+        <path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/>
+      </svg>
+    ),
     title: "National Scale to Strengthen Local Execution",
-    body: "You will be able to leverage the reach, reputation, and capabilities of a national platform to win larger contracts, expand service offerings, and attract best-in-class talent.",
+    body: "Leverage the reach, reputation, and capabilities of a national platform to win larger contracts, expand service offerings, and attract best-in-class talent.",
   },
   {
-    num: "04",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg>
+    ),
     title: "Bigger Financial Upside",
-    body: "You will be able to participate in the financial upside of being part of a large and diversified national group, whilst retaining operational independence and local identity.",
+    body: "Participate in the financial upside of a large and diversified national group, whilst retaining full operational independence and your local identity.",
   },
 ];
 
-function BenefitCard({ b, delay }) {
+function BenefitRow({ b, delay, last }) {
   const [h, setH] = useState(false);
   return (
     <Reveal delay={delay}>
       <div
         onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
         style={{
-          display: "flex", gap: "24px", alignItems: "flex-start",
-          padding: "30px 32px", borderRadius: "14px",
-          background: h ? T.bgCard : "transparent",
-          border: `1px solid ${h ? T.sageBorder : T.border}`,
-          boxShadow: h ? "0 6px 24px rgba(35,51,41,0.07)" : "none",
-          transition: "all 0.32s ease", cursor: "default",
+          display: "flex", gap: "28px", alignItems: "flex-start",
+          padding: "28px 0",
+          borderBottom: last ? "none" : `1px solid ${T.border}`,
+          transition: "all 0.28s ease", cursor: "default",
+          position: "relative",
         }}
       >
-        {/* Number bubble */}
+        {/* Icon circle */}
         <div style={{
-          flexShrink: 0, width: "38px", height: "38px",
-          borderRadius: "100px",
-          background: h ? T.sage : "rgba(121,164,126,0.1)",
-          border: `1px solid ${T.sageBorder}`,
+          flexShrink: 0,
+          width: "48px", height: "48px", borderRadius: "50%",
+          background: h ? T.sage : "rgba(121,164,126,0.10)",
+          border: `1px solid ${h ? T.sage : T.sageBorder}`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-          fontSize: "12px", letterSpacing: "0.04em",
           color: h ? "#ffffff" : T.sage,
-          transition: "all 0.28s ease",
-        }}>{b.num}</div>
+          transition: "all 0.30s ease",
+          marginTop: "2px",
+        }}>{b.icon}</div>
 
-        <div>
+        <div style={{ flex: 1 }}>
           <h3 style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-            fontSize: "16px", color: T.forest, margin: "0 0 8px", lineHeight: 1.4,
+            fontSize: "17px", color: T.forest,
+            margin: "0 0 8px", lineHeight: 1.35,
           }}>{b.title}</h3>
           <p style={{
-            fontFamily: "'Inter', sans-serif", fontWeight: 300,
-            fontSize: "14px", color: T.muted, margin: 0, lineHeight: 1.8,
+            fontFamily: "'Inter', sans-serif", fontWeight: 400,
+            fontSize: "15px", color: T.muted,
+            margin: 0, lineHeight: 1.85,
           }}>{b.body}</p>
         </div>
       </div>
@@ -548,26 +578,42 @@ function Benefits() {
   return (
     <>
       <section style={{ background: T.bgCard, padding: `${S.section} ${S.gutter}` }}>
-        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "80px", alignItems: "center" }} className="two-col">
+
+          {/* Left: vertically centred heading column */}
           <Reveal>
-            <div style={{ marginBottom: "56px" }}>
-              <Eyebrow>Why Join Kadence Safety</Eyebrow>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
-                fontSize: "clamp(28px, 3.8vw, 46px)",
+                fontSize: "clamp(28px, 3.5vw, 46px)",
                 color: T.forest, letterSpacing: "-0.022em",
-                lineHeight: 1.14, margin: 0, maxWidth: "520px",
+                lineHeight: 1.12, margin: "0 0 20px",
               }}>
-                Benefits from Joining the Group
+                Benefits from<br />Joining the Group
               </h2>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 400,
+                fontSize: "16px", color: T.muted,
+                lineHeight: 1.8, margin: 0, maxWidth: "280px",
+              }}>
+                A partnership built to unlock your full potential.
+              </p>
             </div>
           </Reveal>
 
-          <div className="two-col-benefits" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
+          {/* Right: benefit rows with timeline connector */}
+          <div style={{ position: "relative" }}>
+            {/* Vertical timeline line */}
+            <div style={{
+              position: "absolute", left: "-28px", top: "24px", bottom: "24px",
+              width: "1px",
+              background: `linear-gradient(to bottom, rgba(121,164,126,0.0) 0%, ${T.sage} 12%, ${T.sage} 88%, rgba(121,164,126,0.0) 100%)`,
+            }} />
             {benefits.map((b, i) => (
-              <BenefitCard key={b.num} b={b} delay={i * 0.07} />
+              <BenefitRow key={i} b={b} delay={i * 0.08} last={i === benefits.length - 1} />
             ))}
           </div>
+
         </div>
       </section>
       <Divider />
@@ -622,7 +668,7 @@ function CTA() {
               fontSize: "17px", color: "rgba(255,255,255,0.58)",
               lineHeight: 1.8, margin: "0 0 44px",
             }}>
-              We are always looking for exceptional businesses and founders to partner with. If you're ready to grow with the group, we'd love to hear from you.
+              We are always looking for exceptional businesses and founders to partner with.
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <CTABtn primary>Contact Us</CTABtn>
@@ -668,7 +714,7 @@ function Footer() {
       <div style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
         fontWeight: 800, fontSize: "18px", color: "#ffffff",
-      }}>Kadence</div>
+      }}>Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span></div>
 
       <div style={{ display: "flex", gap: "28px" }}>
         {["Home", "About Us", "How to Partner"].map(l => (
