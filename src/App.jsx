@@ -1496,8 +1496,11 @@ export default function App() {
 
   const setPage = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [currentPage]);
 
   return (
     <>
