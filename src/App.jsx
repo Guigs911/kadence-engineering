@@ -125,8 +125,8 @@ function TwoToneH1({ line1, line2 }) {
       fontWeight: 800, fontSize: "clamp(40px, 6.5vw, 74px)",
       lineHeight: 1.08, letterSpacing: "-0.025em", margin: "0 0 32px",
     }}>
-      <span style={{ color: T.sage, display: "block" }}>{line1}</span>
-      <span style={{ color: "#ffffff", display: "block" }}>{line2}</span>
+      <span style={{ color: "#ffffff", display: "block" }}>{line1}</span>
+      <span style={{ color: T.sage, display: "block" }}>{line2}</span>
     </h1>
   );
 }
@@ -324,15 +324,15 @@ function Hero({ setPage }) {
             <p style={{
               fontFamily: "'Inter', sans-serif", fontWeight: 300,
               fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
-              lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "500px",
+              lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "640px",
             }}>
-              Bringing together the best entrepreneurs in Health &amp; Safety to create the partner of choice for UK businesses.
+              Building a national leader in Health &amp; Safety services in the UK.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <PillButton primary onClick={() => setPage("contact")}>Contact Us</PillButton>
-              <PillButton onClick={() => setPage("partner")}>How to Partner</PillButton>
+              <PillButton primary onClick={() => setPage("partner")}>How to Partner</PillButton>
+              <PillButton onClick={() => setPage("contact")}>Contact Us</PillButton>
             </div>
           </Reveal>
         </div>
@@ -359,26 +359,24 @@ function Hero({ setPage }) {
 function Mission() {
   return (
     <>
-      <section style={{ background: T.bgCard, padding: `${S.section} ${S.gutter}` }}>
+      <section style={{ background: T.bgCard, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
         <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "72px", alignItems: "center" }} className="two-col">
           <div>
             <Reveal delay={0}>
+              <Eyebrow>Our Mission</Eyebrow>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
                 fontSize: "clamp(30px, 4vw, 50px)",
                 lineHeight: 1.12, letterSpacing: "-0.022em",
                 color: T.forest, margin: "0 0 32px",
               }}>
-                Our Mission
+                Raising the Standards<br />of Workplace Safety
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px" }}>
                 <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
-                  We bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for businesses seeking to protect their people, assets, and the environment.
-                </p>
-                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
-                  We acquire, support, and grow specialist firms through shared resources, technology, and capital – raising the standard of workplace safety across the UK.
+                  We want to bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for clients seeking to protect their people, assets, and the environment.
                 </p>
               </div>
             </Reveal>
@@ -448,7 +446,7 @@ function FocusCard({ item, delay }) {
             }}>{item.title}</h3>
             <div style={{ width: h ? "48px" : "32px", height: "2px", background: T.sage, borderRadius: "2px", marginBottom: "14px", transition: "width 0.32s ease" }} />
           </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, margin: 0, lineHeight: 1.85 }}>{item.body}</p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, margin: 0, lineHeight: 1.85 }}>{item.body}</p>
         </div>
         <div style={{
           position: "absolute", top: 0, right: 0, width: "140px", height: "140px",
@@ -467,16 +465,12 @@ function Focus() {
         <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
           <Reveal>
             <div style={{ marginBottom: "56px" }}>
+              <Eyebrow>Our Focus</Eyebrow>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
-                fontSize: "clamp(28px, 3.8vw, 46px)", color: T.forest,
-                letterSpacing: "-0.022em", lineHeight: 1.14, margin: "0 0 16px", maxWidth: "520px",
-              }}>Our Focus</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, maxWidth: "900px", lineHeight: 1.8, opacity: 0.72, whiteSpace: "nowrap" }}>
-                We are looking to partner with{" "}
-                <span style={{ color: "#3d5c45", fontWeight: 700 }}>exceptional businesses and entrepreneurs</span>
-                {" "}operating in the following areas:
-              </p>
+                fontSize: "clamp(28px, 4.2vw, 54px)", color: T.forest,
+                letterSpacing: "-0.022em", lineHeight: 1.14, margin: "0 0 16px",
+              }}>We are looking to partner with exceptional<br />businesses and entrepreneurs</h2>
             </div>
           </Reveal>
           <div className="four-col" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", columnGap: "14px", rowGap: "28px" }}>
@@ -495,23 +489,23 @@ function Focus() {
 const benefits = [
   {
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>),
-    title: "Central Services To Free Up Time on What Really Matters",
-    body: "We remove your administrative burden by centralising back-office functions, allowing you to focus entirely on client service excellence and team leadership.",
+    title: "Central Services To Free Up Time for What Really Matters",
+    body: "We remove your administrative burden by centralising back-office functions, allowing you to focus entirely on client service excellence.",
   },
   {
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/></svg>),
     title: "Technological Support for Digitalisation and Growth",
-    body: "We provide a modern software and tech stack to every company in the group, enabling your teams to work more efficiently, securely, and to the highest standards.",
+    body: "We provide a modern tech stack, enabling your teams to work more efficiently, securely, and to the highest standards.",
   },
   {
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/></svg>),
     title: "National Scale to Strengthen Local Execution",
-    body: "Leverage the reach, reputation, and capabilities of a national platform to win larger contracts, expand service offerings, and attract best-in-class talent.",
+    body: "You leverage the reach, reputation, and capabilities of a national platform to win larger contracts, expand service offerings, and attract top talent.",
   },
   {
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>),
     title: "Bigger Financial Upside",
-    body: "Participate in the financial upside of a large and diversified national group, whilst retaining full operational independence and your local identity.",
+    body: "You participate in the financial upside of a large and diversified national group, whilst retaining full operational independence and your local identity.",
   },
 ];
 
@@ -537,7 +531,7 @@ function BenefitRow({ b, delay, last }) {
         }}>{b.icon}</div>
         <div style={{ flex: 1 }}>
           <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "17px", color: T.forest, margin: "0 0 8px", lineHeight: 1.35 }}>{b.title}</h3>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.85 }}>{b.body}</p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.forest, margin: 0, lineHeight: 1.85, whiteSpace: "pre-line" }}>{b.body}</p>
         </div>
       </div>
     </Reveal>
@@ -551,6 +545,7 @@ function Benefits() {
         <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "80px", alignItems: "center" }} className="two-col">
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+              <Eyebrow>Why Join</Eyebrow>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
                 fontSize: "clamp(28px, 3.5vw, 46px)", color: T.forest,
@@ -610,8 +605,8 @@ function HomeCTA({ setPage }) {
               We are always looking for exceptional businesses and founders to partner with.
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <CTABtn primary onClick={() => setPage("contact")}>Contact Us</CTABtn>
-              <CTABtn onClick={() => setPage("partner")}>How to Partner</CTABtn>
+              <CTABtn primary onClick={() => setPage("partner")}>How to Partner</CTABtn>
+              <CTABtn onClick={() => setPage("contact")}>Contact Us</CTABtn>
             </div>
           </Reveal>
         </div>
@@ -771,9 +766,9 @@ function ValueCard({ v, delay }) {
           position: "relative", overflow: "hidden", height: "100%",
         }}
       >
-        <div style={{ width: h ? "48px" : "32px", height: "3px", background: T.sage, borderRadius: "2px", marginBottom: "20px", transition: "width 0.32s ease" }} />
-        <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "18px", color: T.forest, margin: "0 0 12px", lineHeight: 1.3 }}>{v.title}</h3>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.8 }}>{v.body}</p>
+        <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "18px", color: T.sage, margin: "0 0 10px", lineHeight: 1.3 }}>{v.title}</h3>
+        <div style={{ width: h ? "48px" : "32px", height: "3px", background: T.sage, borderRadius: "2px", marginBottom: "16px", transition: "width 0.32s ease" }} />
+        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.forest, margin: 0, lineHeight: 1.8 }}>{v.body}</p>
         <div style={{ position: "absolute", top: 0, right: 0, width: "120px", height: "120px", background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)", opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none" }} />
       </div>
     </Reveal>
