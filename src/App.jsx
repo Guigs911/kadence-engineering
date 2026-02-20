@@ -49,16 +49,78 @@ const GlobalStyles = () => (
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
       }
+
+      /* ── Tablet ── */
       @media (max-width: 900px) {
-        .two-col { grid-template-columns: 1fr !important; gap: 48px !important; }
-        .four-col { grid-template-columns: 1fr !important; }
-        .two-col-benefits { grid-template-columns: 1fr !important; }
+        .two-col { grid-template-columns: 1fr !important; gap: 40px !important; }
+        .four-col { grid-template-columns: 1fr 1fr !important; }
         .contact-grid { grid-template-columns: 1fr !important; }
         .team-grid { grid-template-columns: 1fr !important; }
         .process-grid { grid-template-columns: 1fr !important; }
-      }
-      @media (max-width: 600px) {
+        .benefits-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
         .nav-links { display: none !important; }
+        .nav-hamburger { display: flex !important; }
+        .hero-buttons { flex-direction: column !important; align-items: center !important; }
+        .hero-buttons button { width: 100% !important; max-width: 320px !important; }
+        .cta-buttons { flex-direction: column !important; align-items: center !important; }
+        .cta-buttons button { width: 100% !important; max-width: 280px !important; }
+        .contact-image { display: none !important; }
+      }
+
+      /* ── Mobile ── */
+      @media (max-width: 600px) {
+        .four-col { grid-template-columns: 1fr !important; }
+        .values-grid { grid-template-columns: 1fr !important; }
+        .mobile-stack { flex-direction: column !important; align-items: stretch !important; }
+        .mobile-center { text-align: center !important; }
+        .mobile-hide { display: none !important; }
+        .mission-grid { gap: 32px !important; }
+        .hero-buttons { gap: 10px !important; }
+        .benefits-grid { gap: 32px !important; }
+        /* Reduce section padding on mobile */
+        section { padding-left: 20px !important; padding-right: 20px !important; }
+        footer { padding-left: 20px !important; padding-right: 20px !important; }
+        /* Footer: stack on mobile */
+        footer { grid-template-columns: 1fr !important; gap: 20px !important; text-align: center !important; }
+        footer button { justify-self: center !important; }
+        footer div:last-child { justify-self: center !important; text-align: center !important; }
+        /* Process steps: tighter */
+        .process-step-content { flex-direction: column !important; }
+        /* Founder cards: reduce padding */
+        .founder-info { padding: 20px !important; }
+      }
+
+      /* ── Mobile drawer ── */
+      .mobile-drawer {
+        position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
+        background: rgba(35,51,41,0.98);
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 32px; z-index: 199;
+        backdrop-filter: blur(16px);
+        animation: drawerIn 0.25s ease;
+      }
+      @keyframes drawerIn {
+        from { opacity: 0; transform: translateY(-12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .mobile-drawer button {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 600; font-size: 22px;
+        color: rgba(255,255,255,0.85);
+        background: none; border: none; cursor: pointer;
+        letter-spacing: -0.01em;
+        transition: color 0.2s;
+      }
+      .mobile-drawer button:hover { color: #ffffff; }
+      .mobile-drawer .drawer-cta {
+        margin-top: 8px;
+        font-size: 16px !important;
+        padding: 12px 36px !important;
+        border-radius: 100px !important;
+        background: ${T.sage} !important;
+        color: #ffffff !important;
+        border: none !important;
       }
     `}</style>
   </>
@@ -134,56 +196,109 @@ function TwoToneH1({ line1, line2 }) {
 /* ── NAV ────────────────────────────────────────────────────── */
 function Nav({ currentPage, setPage }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 48);
     window.addEventListener("scroll", h);
     return () => window.removeEventListener("scroll", h);
   }, []);
 
+  // Close drawer on page change
+  useEffect(() => { setMenuOpen(false); }, [currentPage]);
+
   const isContact = currentPage === "contact";
-  const isContactTop = isContact && !scrolled;
   const logoColor = (scrolled && !isContact) ? T.forest : "#ffffff";
+  const iconColor = (scrolled && !isContact) ? T.forest : "#ffffff";
+
+  const navTo = (page) => { setPage(page); setMenuOpen(false); };
 
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: `0 ${S.gutter}`, height: "72px",
-      background: isContact ? `rgba(35,51,41,0.97)` : (scrolled ? "rgba(244,245,242,0.97)" : "transparent"),
-      backdropFilter: (!isContact && scrolled) ? "blur(16px)" : "none",
-      borderBottom: (isContact || !scrolled) ? "1px solid rgba(255,255,255,0.18)" : `1px solid ${T.border}`,
-      transition: "all 0.4s ease",
-    }}>
-      {/* Logo */}
-      <div
-        onClick={() => setPage("home")}
-        style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontWeight: 800, fontSize: "30px", letterSpacing: "-0.02em",
-          color: logoColor, transition: "color 0.4s", cursor: "pointer",
-        }}
-      >
-        Kadence<span style={{ color: (scrolled && !isContactTop) ? T.sage : T.sage, fontWeight: 600, transition: "color 0.4s" }}> Safety</span>
-      </div>
+    <>
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: `0 ${S.gutter}`, height: "72px",
+        background: menuOpen
+          ? "rgba(35,51,41,0.98)"
+          : isContact
+            ? "rgba(35,51,41,0.97)"
+            : (scrolled ? "rgba(244,245,242,0.97)" : "transparent"),
+        backdropFilter: (!isContact && scrolled && !menuOpen) ? "blur(16px)" : "none",
+        borderBottom: (isContact || !scrolled || menuOpen) ? "1px solid rgba(255,255,255,0.18)" : `1px solid ${T.border}`,
+        transition: "background 0.4s ease, border-color 0.4s ease",
+      }}>
+        {/* Logo */}
+        <div
+          onClick={() => navTo("home")}
+          style={{
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 800, fontSize: "clamp(22px, 4vw, 30px)", letterSpacing: "-0.02em",
+            color: menuOpen ? "#ffffff" : logoColor, transition: "color 0.4s", cursor: "pointer",
+          }}
+        >
+          Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+        </div>
 
-      <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "36px" }}>
-        {[
-          { label: "Home",           page: "home" },
-          { label: "About Us",       page: "about" },
-          { label: "How to Partner", page: "partner" },
-        ].map(({ label, page }) => (
-          <NavLink
-            key={page}
-            label={label}
-            scrolled={scrolled}
-            darkTop={isContact}
-            active={currentPage === page}
-            onClick={() => setPage(page)}
-          />
-        ))}
-        <NavCTA scrolled={scrolled} darkTop={isContact} onClick={() => setPage("contact")} />
-      </div>
-    </nav>
+        {/* Desktop links */}
+        <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "36px" }}>
+          {[
+            { label: "Home",           page: "home" },
+            { label: "About Us",       page: "about" },
+            { label: "How to Partner", page: "partner" },
+          ].map(({ label, page }) => (
+            <NavLink
+              key={page}
+              label={label}
+              scrolled={scrolled}
+              darkTop={isContact}
+              active={currentPage === page}
+              onClick={() => navTo(page)}
+            />
+          ))}
+          <NavCTA scrolled={scrolled} darkTop={isContact} onClick={() => navTo("contact")} />
+        </div>
+
+        {/* Hamburger */}
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          style={{
+            display: "none", flexDirection: "column", justifyContent: "center",
+            alignItems: "center", gap: "5px",
+            background: "none", border: "none", cursor: "pointer", padding: "8px",
+          }}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke={menuOpen ? "#ffffff" : iconColor} strokeWidth="2" strokeLinecap="round" width="24" height="24">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none" stroke={menuOpen ? "#ffffff" : iconColor} strokeWidth="2" strokeLinecap="round" width="24" height="24">
+              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          )}
+        </button>
+      </nav>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className="mobile-drawer">
+          {[
+            { label: "Home",           page: "home" },
+            { label: "About Us",       page: "about" },
+            { label: "How to Partner", page: "partner" },
+          ].map(({ label, page }) => (
+            <button key={page} onClick={() => navTo(page)}
+              style={{ color: currentPage === page ? "#ffffff" : "rgba(255,255,255,0.7)" }}>
+              {label}
+            </button>
+          ))}
+          <button className="drawer-cta" onClick={() => navTo("contact")}>Contact Us</button>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -277,9 +392,9 @@ function CTABtn({ children, primary = false, onClick }) {
         transition: "all 0.22s ease",
         background: primary
           ? (h ? "#6d9472" : T.sage)
-          : (h ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.06)"),
+          : (h ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)"),
         color: "#ffffff",
-        border: "1px solid rgba(255,255,255,0.22)",
+        border: "1.5px solid rgba(255,255,255,0.45)",
         backdropFilter: primary ? "none" : "blur(4px)",
       }}
     >{children}</button>
@@ -335,7 +450,7 @@ function Hero({ setPage }) {
             </p>
           </Reveal>
           <Reveal delay={0.3}>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <div className="hero-buttons" style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <PillButton primary onClick={() => setPage("partner")}>How to Partner</PillButton>
               <PillButton onClick={() => setPage("contact")}>Contact Us</PillButton>
             </div>
@@ -365,7 +480,7 @@ function Mission() {
   return (
     <>
       <section style={{ background: T.bgCard, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
-        <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "72px", alignItems: "center" }} className="two-col">
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "72px", alignItems: "center" }} className="two-col mission-grid">
           <div>
             <Reveal delay={0}>
               <Eyebrow>Our Mission</Eyebrow>
@@ -547,7 +662,7 @@ function Benefits() {
   return (
     <>
       <section style={{ background: T.bgCard, padding: `${S.section} ${S.gutter}` }}>
-        <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "80px", alignItems: "center" }} className="two-col">
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "80px", alignItems: "center" }} className="two-col benefits-grid">
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
               <Eyebrow>Why Join</Eyebrow>
@@ -609,7 +724,7 @@ function HomeCTA({ setPage }) {
             }}>
               We are always looking for exceptional businesses and founders to partner with.
             </p>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <div className="cta-buttons" style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <CTABtn primary onClick={() => setPage("partner")}>How to Partner</CTABtn>
               <CTABtn onClick={() => setPage("contact")}>Contact Us</CTABtn>
             </div>
@@ -682,7 +797,7 @@ function AboutPage({ setPage }) {
               </h2>
             </div>
           </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px", alignItems: "stretch" }} className="four-col">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px", alignItems: "stretch" }} className="four-col values-grid">
             {[
               { title: "Partnership First", body: "We see every acquisition as the beginning of a long-term relationship. We succeed when our partners succeed." },
               { title: "Integrity Always", body: "We operate with complete transparency – on valuation, process, and expectations. No surprises, no hidden agendas." },
@@ -828,7 +943,7 @@ function FounderCard({ name, role, bio, linkedin, photo, delay }) {
         </div>
 
         {/* Info */}
-        <div style={{ padding: "32px" }}>
+        <div className="founder-info" style={{ padding: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", marginRight: "-2px" }}>
             <div>
               <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "22px", color: T.forest, margin: "0 0 6px", letterSpacing: "-0.01em" }}>{name}</h3>
@@ -1272,8 +1387,8 @@ function ContactPage() {
           </Reveal>
 
           {/* Right: Image */}
-          <Reveal delay={0.15}>
-            <div style={{
+          <Reveal delay={0.15} style={{ display: "contents" }}>
+            <div className="contact-image" style={{
               borderRadius: "20px", overflow: "hidden",
               boxShadow: "0 24px 64px rgba(35,51,41,0.16)",
               height: "100%", minHeight: "520px",
@@ -1347,7 +1462,7 @@ function Footer({ setPage }) {
         Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
       </button>
 
-      <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
         {[
           { label: "Home",           page: "home" },
           { label: "About Us",       page: "about" },
