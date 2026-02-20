@@ -140,16 +140,18 @@ function Nav({ currentPage, setPage }) {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  const logoColor = scrolled ? T.forest : "#ffffff";
+  const isContact = currentPage === "contact";
+  const isContactTop = isContact && !scrolled;
+  const logoColor = (scrolled && !isContact) ? T.forest : "#ffffff";
 
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
       display: "flex", alignItems: "center", justifyContent: "space-between",
       padding: `0 ${S.gutter}`, height: "72px",
-      background: scrolled ? "rgba(244,245,242,0.97)" : "transparent",
-      backdropFilter: scrolled ? "blur(16px)" : "none",
-      borderBottom: scrolled ? `1px solid ${T.border}` : "1px solid rgba(255,255,255,0.18)",
+      background: isContact ? `rgba(35,51,41,0.97)` : (scrolled ? "rgba(244,245,242,0.97)" : "transparent"),
+      backdropFilter: (!isContact && scrolled) ? "blur(16px)" : "none",
+      borderBottom: (isContact || !scrolled) ? "1px solid rgba(255,255,255,0.18)" : `1px solid ${T.border}`,
       transition: "all 0.4s ease",
     }}>
       {/* Logo */}
@@ -161,7 +163,7 @@ function Nav({ currentPage, setPage }) {
           color: logoColor, transition: "color 0.4s", cursor: "pointer",
         }}
       >
-        Kadence<span style={{ color: scrolled ? T.sage : "rgba(121,164,126,0.75)", fontWeight: 600, transition: "color 0.4s" }}> Safety</span>
+        Kadence<span style={{ color: (scrolled && !isContactTop) ? T.sage : T.sage, fontWeight: 600, transition: "color 0.4s" }}> Safety</span>
       </div>
 
       <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "36px" }}>
@@ -174,18 +176,20 @@ function Nav({ currentPage, setPage }) {
             key={page}
             label={label}
             scrolled={scrolled}
+            darkTop={isContact}
             active={currentPage === page}
             onClick={() => setPage(page)}
           />
         ))}
-        <NavCTA scrolled={scrolled} onClick={() => setPage("contact")} />
+        <NavCTA scrolled={scrolled} darkTop={isContact} onClick={() => setPage("contact")} />
       </div>
     </nav>
   );
 }
 
-function NavLink({ label, scrolled, active, onClick }) {
+function NavLink({ label, scrolled, darkTop, active, onClick }) {
   const [h, setH] = useState(false);
+  const light = !scrolled || darkTop;
   return (
     <button
       onClick={onClick}
@@ -194,11 +198,11 @@ function NavLink({ label, scrolled, active, onClick }) {
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "16px",
         color: active
-          ? (scrolled ? T.forest : "#ffffff")
+          ? (light ? "#ffffff" : T.forest)
           : h
-            ? (scrolled ? T.forest : "#ffffff")
-            : (scrolled ? T.muted : "rgba(255,255,255,0.68)"),
-        textDecoration: active ? "none" : "none",
+            ? (light ? "#ffffff" : T.forest)
+            : (light ? "rgba(255,255,255,0.68)" : T.muted),
+        textDecoration: "none",
         background: "none", border: "none", cursor: "pointer",
         padding: 0, position: "relative", transition: "color 0.2s",
       }}
@@ -208,7 +212,7 @@ function NavLink({ label, scrolled, active, onClick }) {
       <span style={{
         position: "absolute", bottom: "-4px", left: 0, right: 0,
         height: "2px", borderRadius: "2px",
-        background: scrolled ? T.sage : "#ffffff",
+        background: light ? "#ffffff" : T.sage,
         opacity: active ? 1 : 0,
         transition: "opacity 0.2s",
       }} />
@@ -216,8 +220,9 @@ function NavLink({ label, scrolled, active, onClick }) {
   );
 }
 
-function NavCTA({ scrolled, onClick }) {
+function NavCTA({ scrolled, darkTop, onClick }) {
   const [h, setH] = useState(false);
+  const light = !scrolled || darkTop;
   return (
     <button
       onClick={onClick}
@@ -226,9 +231,9 @@ function NavCTA({ scrolled, onClick }) {
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "15px",
         padding: "10px 26px", borderRadius: "100px", cursor: "pointer",
-        background: h ? T.sage : (scrolled ? T.forest : "rgba(255,255,255,0.12)"),
+        background: h ? T.sage : (light ? "rgba(255,255,255,0.12)" : T.forest),
         color: "#ffffff",
-        border: scrolled ? "none" : "1px solid rgba(255,255,255,0.28)",
+        border: light ? "1px solid rgba(255,255,255,0.28)" : "none",
         transition: "all 0.22s ease",
       }}
     >Contact Us</button>
@@ -622,36 +627,49 @@ function HomeCTA({ setPage }) {
 function AboutPage({ setPage }) {
   return (
     <>
-      {/* ── Page header ── */}
-      <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
+      {/* ── Team header ── */}
+      <section style={{ background: T.bgDark, padding: `100px ${S.gutter} 40px`, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
-          <Reveal delay={0.05}>
-            <Eyebrow>Who We Are</Eyebrow>
-          </Reveal>
+          <Reveal delay={0.05}><Eyebrow>The Team</Eyebrow></Reveal>
           <Reveal delay={0.12}>
             <h1 style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
               fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
-              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
+              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 16px", whiteSpace: "nowrap",
             }}>
-              Experienced Investors.<br />
-              <span style={{ color: T.sage }}>Genuine Partners.</span>
+              Our Founding <span style={{ color: T.sage }}>Team.</span>
             </h1>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300,
-              fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
-              lineHeight: 1.85, maxWidth: "560px",
-            }}>
-              Kadence Safety was founded by two experienced investors who believe the UK's health &amp; safety sector deserves a different kind of growth partner – one that puts people, legacy, and craft first.
-            </p>
           </Reveal>
         </div>
       </section>
       <Divider light />
+
+      {/* ── Team cards ── */}
+      <section style={{ background: T.bgAlt, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+          <div className="team-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "stretch" }}>
+            <FounderCard
+              delay={0.05}
+              name="Gianmarco Iannello"
+              role="Co-Founder"
+              photo={gianmarcoHeadshot}
+              linkedin="https://uk.linkedin.com/in/gianmarco-iannello"
+              bio={"After studying at University College London (UCL), he worked for three years in M&A advisory at Perella Weinberg Partners.\n\nSubsequently, he spent eight years at Permira and KKR, two leading private equity firms, where he focused on buy-and-build and growth investments in Business Services and Financial Services across Europe. He also served on the boards of Alter Domus and APRIL Group.\n\nHe is Adjunct Professor of Finance at Hult International Business School, and a trustee of the United World College of the Adriatic. In 2025, he co-founded Kadence with Guillaume."}
+            />
+            <FounderCard
+              delay={0.12}
+              name="Guillaume Iserin"
+              role="Co-Founder"
+              photo={guillaumeHeadshot}
+              linkedin="https://uk.linkedin.com/in/guillaumeiserin"
+              bio={"After studying at University College London (UCL), he worked for four years in M&A advisory at Perella Weinberg Partners.\n\nSubsequently, he spent four years as part of the investment team at The Cranemere Group, a holding company with >$2.5 billion in shareholder equity, where he focused on Business Services and Light Industrials buy-and-build investments across Europe. He also served on the board of Extraordinary Surfaces.\n\nGuillaume also holds an MBA from INSEAD. In 2025, he co-founded Kadence with Gianmarco."}
+            />
+          </div>
+        </div>
+      </section>
+      <Divider />
 
       {/* ── Values ── */}
       <section style={{ background: T.bgAlt, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
@@ -680,39 +698,6 @@ function AboutPage({ setPage }) {
       </section>
       <Divider />
 
-      {/* ── Team ── */}
-      <section style={{ background: T.bgCard, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
-        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
-          <Reveal>
-            <div style={{ textAlign: "center", marginBottom: "36px" }}>
-              <Eyebrow>The Team</Eyebrow>
-              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(28px, 3.8vw, 44px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12 }}>
-                Our Founding Team
-              </h2>
-            </div>
-          </Reveal>
-          <div className="team-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "stretch" }}>
-            <FounderCard
-              delay={0.05}
-              name="Gianmarco Iannello"
-              role="Co-Founder"
-              photo={gianmarcoHeadshot}
-              linkedin="https://uk.linkedin.com/in/gianmarco-iannello"
-              bio={"After studying at University College London (UCL), he worked for three years in M&A advisory at Perella Weinberg Partners in London.\n\nSubsequently, he spent the following eight years at Permira and KKR, two leading private equity firms, where he focused on buy-and-build and growth investments in Business Services and Financial Services across Europe. He also served on the boards of Alter Domus and APRIL Group.\n\nHe is Adjunct Professor of Finance at Hult International Business School, and he is a trustee of the United World College of the Adriatic. In 2025, he co-founded Kadence with Guillaume."}
-            />
-            <FounderCard
-              delay={0.12}
-              name="Guillaume Iserin"
-              role="Co-Founder"
-              photo={guillaumeHeadshot}
-              linkedin="https://uk.linkedin.com/in/guillaumeiserin"
-              bio={"After studying at University College London (UCL), he worked for four years in M&A advisory at Perella Weinberg Partners in London.\n\nSubsequently, he spent four years as part of the investment team at The Cranemere Group, a holding company with >$2.5 billion in shareholder equity, where he focused on Business Services and Light Industrials buy-and-build investments across the UK, France, Spain and Italy. He also served on the board of Extraordinary Surfaces.\n\nGuillaume also holds an MBA from INSEAD. In 2025, he co-founded Kadence with Gianmarco."}
-            />
-          </div>
-        </div>
-      </section>
-      <Divider />
-
       {/* ── Careers CTA ── */}
       <section style={{
         background: T.bgDark,
@@ -730,8 +715,8 @@ function AboutPage({ setPage }) {
               lineHeight: 1.1, letterSpacing: "-0.025em",
               color: "#ffffff", margin: "0 0 20px",
             }}>
-              Join{" "}
-              <span style={{ color: T.sage }}>Our Team</span>
+              Join the{" "}
+              <span style={{ color: T.sage }}>Team</span>
             </h2>
             <p style={{
               fontFamily: "'Inter', sans-serif", fontWeight: 300,
@@ -871,10 +856,10 @@ const processSteps = [
     num: 1,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-        <polyline points="10 9 9 9 8 9"/>
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+        <path d="M16 3.13a4 4 0 010 7.75"/>
       </svg>
     ),
     title: "Initial Meeting & Fit Assessment",
@@ -907,10 +892,8 @@ const processSteps = [
     num: 4,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-        <path d="M16 3.13a4 4 0 010 7.75"/>
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
     ),
     title: "Due Diligence Phase",
@@ -942,19 +925,19 @@ const processSteps = [
 const faqItems = [
   {
     q: "What are the benefits of joining Kadence?",
-    a: "You realise the value of what you have built to date, while becoming a shareholder in a fast-growing national group. Reinvesting alongside us allows you to participate meaningfully in the upside as we scale the business together, while the group takes on central and administrative functions so you can focus on clients, teams, and running the business.",
+    a: "You realise the value of what you have built to date, while becoming a shareholder in a fast-growing national group.\n\nReinvesting alongside us allows you to participate meaningfully in the upside as we scale the business together, while the group takes on central and administrative functions so you can focus on clients, teams, and running the business.",
   },
   {
-    q: "What are the criteria for joining the Group?",
-    a: "There are no specific criteria for joining the Group. Since each project is unique, we take the time to examine it collaboratively. This personalised approach gives us the agility and flexibility needed to offer tailored partnerships.",
+    q: "What are the criteria for joining Kadence?",
+    a: "There are no specific criteria for joining Kadence.\n\nSince each project is unique, we take the time to examine it collaboratively. This personalized approach gives us the agility and flexibility needed to offer tailored partnerships.",
   },
   {
-    q: "If I join the Group, will I lose my independence?",
-    a: "No. You'll retain full control over your client relationships, go-to-market strategy, and local culture. Behind the scenes, the group offers shared back-office support and drives integration only where it benefits everyone, such as in Finance, Technology or Procurement.",
+    q: "If I join Kadence, will I lose my independence?",
+    a: "No. You will retain full control over your client relationships, go-to-market strategy, and local culture.\n\nThe group offers shared back-office support and drives integration only where it benefits everyone, such as in Finance, Technology or Procurement.",
   },
   {
-    q: "I am thinking about retirement in the short to medium term, can I still join?",
-    a: "Of course. We also welcome companies where succession is top of mind and we provide tailored solutions to ensure business continuity and legacy preservation. Together, we'll manage the transition over several months to ensure a smooth, lasting handover.",
+    q: "I am thinking about retirement, can I still join?",
+    a: "Of course. We also welcome companies where succession is top of mind and we provide tailored solutions to ensure business continuity and legacy preservation. Together, we will manage the transition over several months to ensure a smooth, lasting handover.",
   },
 ];
 
@@ -1033,10 +1016,12 @@ function FAQItem({ item, delay }) {
           </span>
         </button>
         {open && (
-          <div style={{ paddingBottom: "28px" }}>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, lineHeight: 1.85, margin: 0, maxWidth: "820px" }}>
-              {item.a}
-            </p>
+          <div style={{ paddingBottom: "28px", display: "flex", flexDirection: "column", gap: "14px" }}>
+            {item.a.split("\n\n").map((para, i) => (
+              <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, lineHeight: 1.85, margin: 0, maxWidth: "820px" }}>
+                {para}
+              </p>
+            ))}
           </div>
         )}
       </div>
@@ -1059,8 +1044,8 @@ function PartnerPage({ setPage }) {
               fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
               letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
             }}>
-              A Partnership Built<br />
-              <span style={{ color: T.sage }}>to Last.</span>
+              A <span style={{ color: T.sage }}>Partnership</span> Built<br />
+              to Last.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
@@ -1077,7 +1062,7 @@ function PartnerPage({ setPage }) {
       <Divider light />
 
       {/* ── Process steps ── */}
-      <section style={{ background: T.bgPage, padding: `clamp(32px, 4vw, 52px) ${S.gutter}` }}>
+      <section style={{ background: T.bgCard, padding: `clamp(32px, 4vw, 52px) ${S.gutter}` }}>
         <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
           <Reveal>
             <div style={{ textAlign: "center", marginBottom: "28px" }}>
@@ -1182,37 +1167,8 @@ function ContactPage() {
 
   return (
     <>
-      {/* ── Page header ── */}
-      <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
-          <Reveal delay={0.05}><Eyebrow>Contact Us</Eyebrow></Reveal>
-          <Reveal delay={0.12}>
-            <h1 style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
-              fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
-              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
-            }}>
-              Let's Start a<br />
-              <span style={{ color: T.sage }}>Conversation.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300,
-              fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
-              lineHeight: 1.85, maxWidth: "520px",
-            }}>
-              If you are interested in exploring a partnership, or simply would like to know more, we would love to hear from you.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-      <Divider light />
-
       {/* ── Form + Image ── */}
-      <section style={{ background: T.bgPage, padding: `${S.section} ${S.gutter}` }}>
+      <section style={{ background: T.bgPage, padding: `${S.section} ${S.gutter}`, paddingTop: "120px" }}>
         <div className="contact-grid" style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "stretch" }}>
 
           {/* Left: Form */}
@@ -1223,7 +1179,7 @@ function ContactPage() {
                 Let's Talk
               </h2>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, lineHeight: 1.8, margin: "0 0 36px" }}>
-                Fill in the form and we will be in touch shortly.
+                If you are interested in exploring a partnership, or simply would like to know more, we would love to hear from you.
               </p>
 
               {status === "success" ? (
