@@ -1,32 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import missionImg from "./assets/mission.jpg";
+import contactBg from "./assets/contact-bg.jpg";
+import guillaumeHeadshot from "./assets/guillaume-headshot.jpg";
+import gianmarcoHeadshot from "./assets/gianmarco-headshot.jpg";
 
 /* ─────────────────────────────────────────────────────────────
-   DESIGN SYSTEM — Kadence Safety
+   DESIGN SYSTEM – Kadence Safety
    Fonts: Plus Jakarta Sans (headings) + Inter (body)
    Palette: warm off-white, forest green, sage, periwinkle
-   No dark navy — CTA uses deep forest green instead
    ──────────────────────────────────────────────────────────── */
 const T = {
-  /* Backgrounds */
-  bgPage:    "#F4F5F2",          // warm off-white — page base
-  bgAlt:     "#ECEEE9",          // slightly deeper — alternate sections
-  bgDark:    "#233329",          // deep forest green — CTA + footer (replaces navy)
-  bgCard:    "#FFFFFF",
-
-  /* Brand */
-  forest:    "#233329",          // primary text + headings
-  sage:      "#79A47E",          // accent — used sparingly
-  periwinkle:"#8B95C9",          // tertiary — glows only
-
-  /* Text */
-  text:      "#233329",
-  muted:     "#6B7B6E",          // sage-tinted mid-grey
-  mutedLight:"rgba(255,255,255,0.58)",
-
-  /* Borders */
-  border:    "rgba(35,51,41,0.1)",
-  sageBorder:"rgba(121,164,126,0.35)",
+  bgPage:     "#F4F5F2",
+  bgAlt:      "#ECEEE9",
+  bgDark:     "#233329",
+  bgCard:     "#FFFFFF",
+  forest:     "#233329",
+  sage:       "#79A47E",
+  periwinkle: "#8B95C9",
+  text:       "#233329",
+  muted:      "#6B7B6E",
+  mutedLight: "rgba(255,255,255,0.58)",
+  border:     "rgba(35,51,41,0.1)",
+  sageBorder: "rgba(121,164,126,0.35)",
 };
 
 const S = {
@@ -58,6 +53,9 @@ const GlobalStyles = () => (
         .two-col { grid-template-columns: 1fr !important; gap: 48px !important; }
         .four-col { grid-template-columns: 1fr !important; }
         .two-col-benefits { grid-template-columns: 1fr !important; }
+        .contact-grid { grid-template-columns: 1fr !important; }
+        .team-grid { grid-template-columns: 1fr !important; }
+        .process-grid { grid-template-columns: 1fr !important; }
       }
       @media (max-width: 600px) {
         .nav-links { display: none !important; }
@@ -100,12 +98,9 @@ function Eyebrow({ children }) {
   return (
     <div style={{
       fontFamily: "'Plus Jakarta Sans', sans-serif",
-      fontWeight: 600,
-      fontSize: "11px",
-      letterSpacing: "0.14em",
-      textTransform: "uppercase",
-      color: T.sage,
-      marginBottom: "16px",
+      fontWeight: 600, fontSize: "11px",
+      letterSpacing: "0.14em", textTransform: "uppercase",
+      color: T.sage, marginBottom: "16px",
     }}>
       {children}
     </div>
@@ -122,17 +117,13 @@ function Divider({ light = false }) {
   );
 }
 
-/* ── TWO-TONE HEADING ───────────────────────────────────────── */
-/* Mirrors the reference: first line sage-green, second line dark */
+/* ── TWO-TONE H1 ────────────────────────────────────────────── */
 function TwoToneH1({ line1, line2 }) {
   return (
     <h1 style={{
       fontFamily: "'Plus Jakarta Sans', sans-serif",
-      fontWeight: 800,
-      fontSize: "clamp(40px, 6.5vw, 74px)",
-      lineHeight: 1.08,
-      letterSpacing: "-0.025em",
-      margin: "0 0 32px",
+      fontWeight: 800, fontSize: "clamp(40px, 6.5vw, 74px)",
+      lineHeight: 1.08, letterSpacing: "-0.025em", margin: "0 0 32px",
     }}>
       <span style={{ color: T.sage, display: "block" }}>{line1}</span>
       <span style={{ color: "#ffffff", display: "block" }}>{line2}</span>
@@ -141,7 +132,7 @@ function TwoToneH1({ line1, line2 }) {
 }
 
 /* ── NAV ────────────────────────────────────────────────────── */
-function Nav() {
+function Nav({ currentPage, setPage }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 48);
@@ -161,45 +152,77 @@ function Nav() {
       borderBottom: scrolled ? `1px solid ${T.border}` : "1px solid rgba(255,255,255,0.18)",
       transition: "all 0.4s ease",
     }}>
-      <div style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 800, fontSize: "30px", letterSpacing: "-0.02em",
-        color: logoColor, transition: "color 0.4s",
-      }}>
+      {/* Logo */}
+      <div
+        onClick={() => setPage("home")}
+        style={{
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontWeight: 800, fontSize: "30px", letterSpacing: "-0.02em",
+          color: logoColor, transition: "color 0.4s", cursor: "pointer",
+        }}
+      >
         Kadence<span style={{ color: scrolled ? T.sage : "rgba(121,164,126,0.75)", fontWeight: 600, transition: "color 0.4s" }}> Safety</span>
       </div>
 
       <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "36px" }}>
-        {["Home", "About Us", "How to Partner"].map(l => (
-          <NavLink key={l} label={l} scrolled={scrolled} />
+        {[
+          { label: "Home",           page: "home" },
+          { label: "About Us",       page: "about" },
+          { label: "How to Partner", page: "partner" },
+        ].map(({ label, page }) => (
+          <NavLink
+            key={page}
+            label={label}
+            scrolled={scrolled}
+            active={currentPage === page}
+            onClick={() => setPage(page)}
+          />
         ))}
-        <NavCTA scrolled={scrolled} />
+        <NavCTA scrolled={scrolled} onClick={() => setPage("contact")} />
       </div>
     </nav>
   );
 }
 
-function NavLink({ label, scrolled }) {
-  const [h, setH] = useState(false);
-  return (
-    <a href="#"
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
-      style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "16px",
-        color: h
-          ? (scrolled ? T.forest : "#ffffff")
-          : (scrolled ? T.muted : "rgba(255,255,255,0.68)"),
-        textDecoration: "none", transition: "color 0.2s",
-      }}
-    >{label}</a>
-  );
-}
-
-function NavCTA({ scrolled }) {
+function NavLink({ label, scrolled, active, onClick }) {
   const [h, setH] = useState(false);
   return (
     <button
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "16px",
+        color: active
+          ? (scrolled ? T.forest : "#ffffff")
+          : h
+            ? (scrolled ? T.forest : "#ffffff")
+            : (scrolled ? T.muted : "rgba(255,255,255,0.68)"),
+        textDecoration: active ? "none" : "none",
+        background: "none", border: "none", cursor: "pointer",
+        padding: 0, position: "relative", transition: "color 0.2s",
+      }}
+    >
+      {label}
+      {/* Active underline */}
+      <span style={{
+        position: "absolute", bottom: "-4px", left: 0, right: 0,
+        height: "2px", borderRadius: "2px",
+        background: scrolled ? T.sage : "#ffffff",
+        opacity: active ? 1 : 0,
+        transition: "opacity 0.2s",
+      }} />
+    </button>
+  );
+}
+
+function NavCTA({ scrolled, onClick }) {
+  const [h, setH] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "15px",
         padding: "10px 26px", borderRadius: "100px", cursor: "pointer",
@@ -212,8 +235,58 @@ function NavCTA({ scrolled }) {
   );
 }
 
+/* ── PILL BUTTON (Hero) ─────────────────────────────────────── */
+function PillButton({ children, primary = false, onClick }) {
+  const [h, setH] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "14px",
+        padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
+        transition: "all 0.22s ease",
+        background: primary
+          ? (h ? "#6d9472" : T.sage)
+          : (h ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.07)"),
+        color: "#ffffff",
+        border: "1px solid rgba(255,255,255,0.22)",
+        backdropFilter: primary ? "none" : "blur(4px)",
+      }}
+    >{children}</button>
+  );
+}
+
+/* ── CTA BUTTON (dark sections) ─────────────────────────────── */
+function CTABtn({ children, primary = false, onClick }) {
+  const [h, setH] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "14px",
+        padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
+        transition: "all 0.22s ease",
+        background: primary
+          ? (h ? "#6d9472" : T.sage)
+          : (h ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.06)"),
+        color: "#ffffff",
+        border: "1px solid rgba(255,255,255,0.22)",
+        backdropFilter: primary ? "none" : "blur(4px)",
+      }}
+    >{children}</button>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HOME PAGE SECTIONS
+   ══════════════════════════════════════════════════════════════ */
+
 /* ── HERO ───────────────────────────────────────────────────── */
-function Hero() {
+function Hero({ setPage }) {
   return (
     <>
       <section style={{
@@ -224,20 +297,17 @@ function Hero() {
         padding: `120px ${S.gutter} 100px`,
         position: "relative", overflow: "hidden",
       }}>
-        {/* Full-bleed photo */}
         <div style={{
           position: "absolute", inset: 0,
           backgroundImage: "url('/hero-bg.jpg')",
           backgroundSize: "cover", backgroundPosition: "center",
           pointerEvents: "none",
         }} />
-        {/* Dark forest-green overlay — fades photo, keeps text legible */}
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(165deg, rgba(35,51,41,0.82) 0%, rgba(28,42,33,0.78) 50%, rgba(20,32,24,0.88) 100%)",
           pointerEvents: "none",
         }} />
-        {/* Subtle sage centre glow on top of overlay */}
         <div style={{
           position: "absolute", top: "30%", left: "50%",
           transform: "translate(-50%, -50%)",
@@ -261,8 +331,8 @@ function Hero() {
           </Reveal>
           <Reveal delay={0.3}>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <PillButton primary>Partner With Us</PillButton>
-              <PillButton>Learn More</PillButton>
+              <PillButton primary onClick={() => setPage("contact")}>Contact Us</PillButton>
+              <PillButton onClick={() => setPage("partner")}>How to Partner</PillButton>
             </div>
           </Reveal>
         </div>
@@ -285,33 +355,12 @@ function Hero() {
   );
 }
 
-function PillButton({ children, primary = false }) {
-  const [h, setH] = useState(false);
-  return (
-    <button
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
-      style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "14px",
-        padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
-        transition: "all 0.22s ease",
-        background: primary
-          ? (h ? "#6d9472" : T.sage)
-          : (h ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.07)"),
-        color: "#ffffff",
-        border: primary ? "none" : "1px solid rgba(255,255,255,0.22)",
-        backdropFilter: primary ? "none" : "blur(4px)",
-      }}
-    >{children}</button>
-  );
-}
-
 /* ── MISSION ────────────────────────────────────────────────── */
 function Mission() {
   return (
     <>
       <section style={{ background: T.bgCard, padding: `${S.section} ${S.gutter}` }}>
         <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "72px", alignItems: "center" }} className="two-col">
-          {/* Left: heading + text */}
           <div>
             <Reveal delay={0}>
               <h2 style={{
@@ -325,34 +374,19 @@ function Mission() {
             </Reveal>
             <Reveal delay={0.12}>
               <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "20px" }}>
-                <p style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400,
-                  fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0,
-                }}>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
                   We bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for businesses seeking to protect their people, assets, and the environment.
                 </p>
-                <p style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400,
-                  fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0,
-                }}>
-                  We acquire, support, and grow specialist firms through shared resources, technology, and capital — raising the standard of workplace safety across the UK.
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
+                  We acquire, support, and grow specialist firms through shared resources, technology, and capital – raising the standard of workplace safety across the UK.
                 </p>
               </div>
             </Reveal>
           </div>
 
-          {/* Right: image */}
           <Reveal delay={0.2}>
-            <div style={{
-              borderRadius: "16px", overflow: "hidden",
-              boxShadow: "0 24px 64px rgba(35,51,41,0.14)",
-              aspectRatio: "4/5",
-            }}>
-              <img
-                src={missionImg}
-                alt="Health and safety professional"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-              />
+            <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 24px 64px rgba(35,51,41,0.14)", aspectRatio: "4/5" }}>
+              <img src={missionImg} alt="Health and safety professional" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
           </Reveal>
         </div>
@@ -402,38 +436,20 @@ function FocusCard({ item, delay }) {
           border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
           boxShadow: h ? "0 12px 40px rgba(35,51,41,0.10)" : "0 2px 12px rgba(35,51,41,0.05)",
           transition: "all 0.32s ease", cursor: "default",
-          position: "relative", overflow: "hidden",
-          height: "100%",
+          position: "relative", overflow: "hidden", height: "100%",
         }}
       >
-        {/* Title + rule pinned to top; body pushed to fixed distance via flex */}
         <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <div style={{ minHeight: "80px" }}>
             <h3 style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
               fontSize: "clamp(20px, 2.6vw, 28px)", color: T.sage,
-              letterSpacing: "-0.02em", lineHeight: 1.25,
-              margin: "0 0 10px", whiteSpace: "pre-line",
+              letterSpacing: "-0.02em", lineHeight: 1.25, margin: "0 0 10px",
             }}>{item.title}</h3>
-
-            {/* Sage underline rule */}
-            <div style={{
-              width: h ? "48px" : "32px",
-              height: "2px",
-              background: T.sage,
-              borderRadius: "2px",
-              marginBottom: "14px",
-              transition: "width 0.32s ease",
-            }} />
+            <div style={{ width: h ? "48px" : "32px", height: "2px", background: T.sage, borderRadius: "2px", marginBottom: "14px", transition: "width 0.32s ease" }} />
           </div>
-
-          <p style={{
-            fontFamily: "'Inter', sans-serif", fontWeight: 400,
-            fontSize: "16px", color: T.muted, margin: 0, lineHeight: 1.85,
-          }}>{item.body}</p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, margin: 0, lineHeight: 1.85 }}>{item.body}</p>
         </div>
-
-        {/* Subtle corner glow */}
         <div style={{
           position: "absolute", top: 0, right: 0, width: "140px", height: "140px",
           background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)",
@@ -453,27 +469,16 @@ function Focus() {
             <div style={{ marginBottom: "56px" }}>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
-                fontSize: "clamp(28px, 3.8vw, 46px)",
-                color: T.forest, letterSpacing: "-0.022em",
-                lineHeight: 1.14, margin: "0 0 16px", maxWidth: "520px",
-              }}>
-                Our Focus
-              </h2>
-              <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 400,
-                fontSize: "16px", color: T.forest, maxWidth: "900px", lineHeight: 1.8,
-                opacity: 0.72, whiteSpace: "nowrap",
-              }}>
+                fontSize: "clamp(28px, 3.8vw, 46px)", color: T.forest,
+                letterSpacing: "-0.022em", lineHeight: 1.14, margin: "0 0 16px", maxWidth: "520px",
+              }}>Our Focus</h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, maxWidth: "900px", lineHeight: 1.8, opacity: 0.72, whiteSpace: "nowrap" }}>
                 We are looking to partner with{" "}
-                <span style={{
-                  color: "#3d5c45",
-                  fontWeight: 700,
-                }}>exceptional businesses and entrepreneurs</span>
+                <span style={{ color: "#3d5c45", fontWeight: 700 }}>exceptional businesses and entrepreneurs</span>
                 {" "}operating in the following areas:
               </p>
             </div>
           </Reveal>
-
           <div className="four-col" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", columnGap: "14px", rowGap: "28px" }}>
             {focusItems.map((item, i) => (
               <FocusCard key={item.num} item={item} delay={i * 0.07} />
@@ -489,43 +494,22 @@ function Focus() {
 /* ── BENEFITS ───────────────────────────────────────────────── */
 const benefits = [
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-    ),
+    icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>),
     title: "Central Services To Free Up Time on What Really Matters",
     body: "We remove your administrative burden by centralising back-office functions, allowing you to focus entirely on client service excellence and team leadership.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
-        <rect x="7" y="7" width="10" height="10" rx="1"/>
-        <path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/>
-      </svg>
-    ),
+    icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/></svg>),
     title: "Technological Support for Digitalisation and Growth",
     body: "We provide a modern software and tech stack to every company in the group, enabling your teams to work more efficiently, securely, and to the highest standards.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
-        <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-        <path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/>
-      </svg>
-    ),
+    icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/></svg>),
     title: "National Scale to Strengthen Local Execution",
     body: "Leverage the reach, reputation, and capabilities of a national platform to win larger contracts, expand service offerings, and attract best-in-class talent.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
-        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-        <polyline points="17 6 23 6 23 12"/>
-      </svg>
-    ),
+    icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>),
     title: "Bigger Financial Upside",
     body: "Participate in the financial upside of a large and diversified national group, whilst retaining full operational independence and your local identity.",
   },
@@ -541,33 +525,19 @@ function BenefitRow({ b, delay, last }) {
           display: "flex", gap: "28px", alignItems: "flex-start",
           padding: "28px 0",
           borderBottom: last ? "none" : `1px solid ${T.border}`,
-          transition: "all 0.28s ease", cursor: "default",
-          position: "relative",
+          transition: "all 0.28s ease", cursor: "default", position: "relative",
         }}
       >
-        {/* Icon circle */}
         <div style={{
-          flexShrink: 0,
-          width: "48px", height: "48px", borderRadius: "50%",
+          flexShrink: 0, width: "48px", height: "48px", borderRadius: "50%",
           background: h ? T.sage : "rgba(121,164,126,0.10)",
           border: `1px solid ${h ? T.sage : T.sageBorder}`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          color: h ? "#ffffff" : T.sage,
-          transition: "all 0.30s ease",
-          marginTop: "2px",
+          color: h ? "#ffffff" : T.sage, transition: "all 0.30s ease", marginTop: "2px",
         }}>{b.icon}</div>
-
         <div style={{ flex: 1 }}>
-          <h3 style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-            fontSize: "17px", color: T.forest,
-            margin: "0 0 8px", lineHeight: 1.35,
-          }}>{b.title}</h3>
-          <p style={{
-            fontFamily: "'Inter', sans-serif", fontWeight: 400,
-            fontSize: "15px", color: T.muted,
-            margin: 0, lineHeight: 1.85,
-          }}>{b.body}</p>
+          <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "17px", color: T.forest, margin: "0 0 8px", lineHeight: 1.35 }}>{b.title}</h3>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.85 }}>{b.body}</p>
         </div>
       </div>
     </Reveal>
@@ -579,41 +549,27 @@ function Benefits() {
     <>
       <section style={{ background: T.bgCard, padding: `${S.section} ${S.gutter}` }}>
         <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "80px", alignItems: "center" }} className="two-col">
-
-          {/* Left: vertically centred heading column */}
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
               <h2 style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
-                fontSize: "clamp(28px, 3.5vw, 46px)",
-                color: T.forest, letterSpacing: "-0.022em",
-                lineHeight: 1.12, margin: "0 0 20px",
-              }}>
-                Benefits from<br />Joining the Group
-              </h2>
-              <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 400,
-                fontSize: "16px", color: T.muted,
-                lineHeight: 1.8, margin: 0, maxWidth: "280px",
-              }}>
+                fontSize: "clamp(28px, 3.5vw, 46px)", color: T.forest,
+                letterSpacing: "-0.022em", lineHeight: 1.12, margin: "0 0 20px",
+              }}>Benefits from<br />Joining the Group</h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, lineHeight: 1.8, margin: 0, maxWidth: "280px" }}>
                 A partnership built to unlock your full potential.
               </p>
             </div>
           </Reveal>
-
-          {/* Right: benefit rows with timeline connector */}
           <div style={{ position: "relative" }}>
-            {/* Vertical timeline line */}
             <div style={{
-              position: "absolute", left: "-28px", top: "24px", bottom: "24px",
-              width: "1px",
+              position: "absolute", left: "-28px", top: "24px", bottom: "24px", width: "1px",
               background: `linear-gradient(to bottom, rgba(121,164,126,0.0) 0%, ${T.sage} 12%, ${T.sage} 88%, rgba(121,164,126,0.0) 100%)`,
             }} />
             {benefits.map((b, i) => (
               <BenefitRow key={i} b={b} delay={i * 0.08} last={i === benefits.length - 1} />
             ))}
           </div>
-
         </div>
       </section>
       <Divider />
@@ -621,35 +577,18 @@ function Benefits() {
   );
 }
 
-/* ── CTA ────────────────────────────────────────────────────── */
-function CTA() {
+/* ── HOME CTA (Get In Touch) ────────────────────────────────── */
+function HomeCTA({ setPage }) {
   return (
     <>
       <section style={{
-        background: T.bgDark,   // deep forest green — not navy
+        background: T.bgDark,
         padding: `${S.section} ${S.gutter}`,
         position: "relative", overflow: "hidden",
       }}>
-        {/* Dot texture */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
-          backgroundSize: "28px 28px", pointerEvents: "none",
-        }} />
-        {/* Sage glow */}
-        <div style={{
-          position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)",
-          width: "800px", height: "280px",
-          background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)",
-          pointerEvents: "none",
-        }} />
-        {/* Periwinkle top-right */}
-        <div style={{
-          position: "absolute", top: "-80px", right: "-80px",
-          width: "400px", height: "400px",
-          background: "radial-gradient(circle, rgba(139,149,201,0.09) 0%, transparent 65%)",
-          pointerEvents: "none",
-        }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(139,149,201,0.09) 0%, transparent 65%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
           <Reveal>
@@ -671,8 +610,8 @@ function CTA() {
               We are always looking for exceptional businesses and founders to partner with.
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <CTABtn primary>Contact Us</CTABtn>
-              <CTABtn>Learn How to Partner →</CTABtn>
+              <CTABtn primary onClick={() => setPage("contact")}>Contact Us</CTABtn>
+              <CTABtn onClick={() => setPage("partner")}>How to Partner</CTABtn>
             </div>
           </Reveal>
         </div>
@@ -682,72 +621,849 @@ function CTA() {
   );
 }
 
-function CTABtn({ children, primary = false }) {
+/* ══════════════════════════════════════════════════════════════
+   ABOUT US PAGE
+   ══════════════════════════════════════════════════════════════ */
+function AboutPage({ setPage }) {
+  return (
+    <>
+      {/* ── Page header ── */}
+      <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
+          <Reveal delay={0.05}>
+            <Eyebrow>Who We Are</Eyebrow>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <h1 style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
+              fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
+              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
+            }}>
+              Experienced Investors.<br />
+              <span style={{ color: T.sage }}>Genuine Partners.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif", fontWeight: 300,
+              fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
+              lineHeight: 1.85, maxWidth: "560px",
+            }}>
+              Kadence Safety was founded by two experienced investors who believe the UK's health &amp; safety sector deserves a different kind of growth partner – one that puts people, legacy, and craft first.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+      <Divider light />
+
+      {/* ── Values ── */}
+      <section style={{ background: T.bgAlt, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: "36px" }}>
+              <Eyebrow>What Guides Us</Eyebrow>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(28px, 3.8vw, 44px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12, margin: "0 auto" }}>
+                Our Values
+              </h2>
+            </div>
+          </Reveal>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px", alignItems: "stretch" }} className="four-col">
+            {[
+              { title: "Partnership First", body: "We see every acquisition as the beginning of a long-term relationship. We succeed when our partners succeed." },
+              { title: "Integrity Always", body: "We operate with complete transparency – on valuation, process, and expectations. No surprises, no hidden agendas." },
+              { title: "Craft & Excellence", body: "We are drawn to businesses that take genuine pride in their work and hold themselves to the highest professional standards." },
+              { title: "People at the Centre", body: "Behind every business are talented people. We invest in them as much as we invest in the business itself." },
+              { title: "Legacy Preserved", body: "We believe a founder's legacy is worth protecting. We work hard to ensure continuity of culture, brand, and identity." },
+              { title: "Ambition With Patience", body: "We move decisively but never rush decisions that deserve careful thought." },
+            ].map((v, i) => (
+              <ValueCard key={i} v={v} delay={i * 0.07} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <Divider />
+
+      {/* ── Team ── */}
+      <section style={{ background: T.bgCard, padding: `clamp(40px, 5vw, 64px) ${S.gutter}` }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: "36px" }}>
+              <Eyebrow>The Team</Eyebrow>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(28px, 3.8vw, 44px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12 }}>
+                Our Founding Team
+              </h2>
+            </div>
+          </Reveal>
+          <div className="team-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "stretch" }}>
+            <FounderCard
+              delay={0.05}
+              name="Gianmarco Iannello"
+              role="Co-Founder"
+              photo={gianmarcoHeadshot}
+              linkedin="https://uk.linkedin.com/in/gianmarco-iannello"
+              bio={"After studying at University College London (UCL), he worked for three years in M&A advisory at Perella Weinberg Partners in London.\n\nSubsequently, he spent the following eight years at Permira and KKR, two leading private equity firms, where he focused on buy-and-build and growth investments in Business Services and Financial Services across Europe. He also served on the boards of Alter Domus and APRIL Group.\n\nHe is Adjunct Professor of Finance at Hult International Business School, and he is a trustee of the United World College of the Adriatic. In 2025, he co-founded Kadence with Guillaume."}
+            />
+            <FounderCard
+              delay={0.12}
+              name="Guillaume Iserin"
+              role="Co-Founder"
+              photo={guillaumeHeadshot}
+              linkedin="https://uk.linkedin.com/in/guillaumeiserin"
+              bio={"After studying at University College London (UCL), he worked for four years in M&A advisory at Perella Weinberg Partners in London.\n\nSubsequently, he spent four years as part of the investment team at The Cranemere Group, a holding company with >$2.5 billion in shareholder equity, where he focused on Business Services and Light Industrials buy-and-build investments across the UK, France, Spain and Italy. He also served on the board of Extraordinary Surfaces.\n\nGuillaume also holds an MBA from INSEAD. In 2025, he co-founded Kadence with Gianmarco."}
+            />
+          </div>
+        </div>
+      </section>
+      <Divider />
+
+      {/* ── Careers CTA ── */}
+      <section style={{
+        background: T.bgDark,
+        padding: `${S.section} ${S.gutter}`,
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
+          <Reveal>
+            <Eyebrow>Careers</Eyebrow>
+            <h2 style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
+              fontSize: "clamp(32px, 5.5vw, 58px)",
+              lineHeight: 1.1, letterSpacing: "-0.025em",
+              color: "#ffffff", margin: "0 0 20px",
+            }}>
+              Join{" "}
+              <span style={{ color: T.sage }}>Our Team</span>
+            </h2>
+            <p style={{
+              fontFamily: "'Inter', sans-serif", fontWeight: 300,
+              fontSize: "17px", color: "rgba(255,255,255,0.58)",
+              lineHeight: 1.8, margin: "0 0 44px",
+            }}>
+              If you share our passion for building enduring businesses and would like to work with us, we would love to hear from you.
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <CTABtn primary onClick={() => setPage("contact")}>Contact Us</CTABtn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      <Divider light />
+    </>
+  );
+}
+
+function ValueCard({ v, delay }) {
+  const [h, setH] = useState(false);
+  return (
+    <Reveal delay={delay} style={{ height: "100%" }}>
+      <div
+        onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+        style={{
+          borderRadius: "20px", padding: "32px",
+          background: T.bgCard,
+          border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
+          boxShadow: h ? "0 12px 40px rgba(35,51,41,0.10)" : "0 2px 12px rgba(35,51,41,0.05)",
+          transition: "all 0.32s ease", cursor: "default",
+          position: "relative", overflow: "hidden", height: "100%",
+        }}
+      >
+        <div style={{ width: h ? "48px" : "32px", height: "3px", background: T.sage, borderRadius: "2px", marginBottom: "20px", transition: "width 0.32s ease" }} />
+        <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "18px", color: T.forest, margin: "0 0 12px", lineHeight: 1.3 }}>{v.title}</h3>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.8 }}>{v.body}</p>
+        <div style={{ position: "absolute", top: 0, right: 0, width: "120px", height: "120px", background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)", opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none" }} />
+      </div>
+    </Reveal>
+  );
+}
+
+function LinkedInButton({ href }) {
+  const [h, setH] = useState(false);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{
+        flexShrink: 0,
+        display: "flex", alignItems: "center", gap: "6px",
+        padding: "7px 14px", borderRadius: "100px",
+        background: h ? "#0A66C2" : "rgba(10,102,194,0.08)",
+        border: "1.5px solid rgba(10,102,194,0.25)",
+        color: h ? "#ffffff" : "#0A66C2",
+        textDecoration: "none",
+        transition: "all 0.22s ease",
+      }}
+    >
+      {/* LinkedIn icon */}
+      <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "12px", letterSpacing: "0.02em" }}>LinkedIn</span>
+    </a>
+  );
+}
+
+function FounderCard({ name, role, bio, linkedin, photo, delay }) {
+  return (
+    <Reveal delay={delay} style={{ height: "100%" }}>
+      <div style={{
+        borderRadius: "20px", overflow: "hidden",
+        border: `1.5px solid ${T.sageBorder}`,
+        background: T.bgCard,
+        boxShadow: "0 4px 24px rgba(35,51,41,0.07)",
+        height: "100%", display: "flex", flexDirection: "column",
+      }}>
+        {/* Avatar: photo or placeholder */}
+        <div style={{
+          width: "100%", aspectRatio: "4/3",
+          background: `linear-gradient(135deg, ${T.bgAlt} 0%, rgba(121,164,126,0.12) 100%)`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          position: "relative", overflow: "hidden",
+        }}>
+          {photo ? (
+            <img src={photo} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }} />
+          ) : (
+            <div style={{ textAlign: "center" }}>
+              <div style={{
+                width: "80px", height: "80px", borderRadius: "50%",
+                background: "rgba(121,164,126,0.18)",
+                border: `2px solid ${T.sageBorder}`,
+                margin: "0 auto 12px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke={T.sage} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="36" height="36">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px", color: T.sage, opacity: 0.7 }}>Photo coming soon</span>
+            </div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div style={{ padding: "32px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", marginRight: "-2px" }}>
+            <div>
+              <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "22px", color: T.forest, margin: "0 0 6px", letterSpacing: "-0.01em" }}>{name}</h3>
+              <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: "13px", color: T.sage, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>{role}</p>
+            </div>
+            {linkedin && <LinkedInButton href={linkedin} />}
+          </div>
+          <div style={{ width: "32px", height: "2px", background: T.sage, borderRadius: "2px", marginBottom: "20px" }} />
+          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            {bio.split("\n\n").map((para, i) => (
+              <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, lineHeight: 1.85, margin: 0 }}>{para}</p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HOW TO PARTNER PAGE
+   ══════════════════════════════════════════════════════════════ */
+const processSteps = [
+  {
+    num: 1,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    ),
+    title: "Initial Meeting & Fit Assessment",
+    body: "We get to know you and your business to ensure there is a strong cultural and strategic alignment.",
+  },
+  {
+    num: 2,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+    ),
+    title: "Exchange of Commercial & Financial Information",
+    body: "Provided there is mutual interest, selected information is shared so we can work on submitting an offer to you.",
+  },
+  {
+    num: 3,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+    ),
+    title: "LOI with Proposed Valuation & Transaction Structure",
+    body: "We prepare a clear offer, setting out the key points of the proposed transaction.",
+  },
+  {
+    num: 4,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+        <path d="M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    ),
+    title: "Due Diligence Phase",
+    body: "A focused review of financial, legal, and people & culture matters.",
+  },
+  {
+    num: 5,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    ),
+    title: "Contracts Finalised & Completion",
+    body: "Agreements are signed, funds are transferred, and the deal is closed.",
+  },
+  {
+    num: 6,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    ),
+    title: "Partnership Begins",
+    body: "We begin working together, supporting growth while preserving what makes your business great.",
+  },
+];
+
+const faqItems = [
+  {
+    q: "What are the benefits of joining Kadence?",
+    a: "You realise the value of what you have built to date, while becoming a shareholder in a fast-growing national group. Reinvesting alongside us allows you to participate meaningfully in the upside as we scale the business together, while the group takes on central and administrative functions so you can focus on clients, teams, and running the business.",
+  },
+  {
+    q: "What are the criteria for joining the Group?",
+    a: "There are no specific criteria for joining the Group. Since each project is unique, we take the time to examine it collaboratively. This personalised approach gives us the agility and flexibility needed to offer tailored partnerships.",
+  },
+  {
+    q: "If I join the Group, will I lose my independence?",
+    a: "No. You'll retain full control over your client relationships, go-to-market strategy, and local culture. Behind the scenes, the group offers shared back-office support and drives integration only where it benefits everyone, such as in Finance, Technology or Procurement.",
+  },
+  {
+    q: "I am thinking about retirement in the short to medium term, can I still join?",
+    a: "Of course. We also welcome companies where succession is top of mind and we provide tailored solutions to ensure business continuity and legacy preservation. Together, we'll manage the transition over several months to ensure a smooth, lasting handover.",
+  },
+];
+
+function ProcessStep({ step, delay }) {
+  const [h, setH] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <div
+        onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+        style={{
+          display: "flex", gap: "20px", alignItems: "flex-start",
+          padding: "18px 24px",
+          borderRadius: "14px",
+          background: h ? T.bgCard : "transparent",
+          border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
+          boxShadow: h ? "0 8px 32px rgba(35,51,41,0.09)" : "0 1px 4px rgba(35,51,41,0.04)",
+          transition: "all 0.32s ease", cursor: "default",
+        }}
+      >
+        {/* Number badge */}
+        <div style={{
+          flexShrink: 0,
+          width: "36px", height: "36px", borderRadius: "50%",
+          background: h ? T.forest : "rgba(35,51,41,0.08)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "background 0.32s ease",
+        }}>
+          <span style={{
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 700, fontSize: "15px",
+            color: h ? "#ffffff" : T.forest,
+            transition: "color 0.32s ease",
+          }}>{step.num}</span>
+        </div>
+
+        {/* Content */}
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+            <span style={{ color: h ? T.sage : T.muted, transition: "color 0.32s ease" }}>{step.icon}</span>
+            <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "17px", color: T.forest, margin: 0, lineHeight: 1.3 }}>{step.title}</h3>
+          </div>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.8 }}>{step.body}</p>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+function FAQItem({ item, delay }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <div style={{ borderBottom: `1px solid ${T.border}` }}>
+        <button
+          onClick={() => setOpen(o => !o)}
+          style={{
+            width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "28px 0", background: "none", border: "none", cursor: "pointer",
+            textAlign: "left", gap: "16px",
+          }}
+        >
+          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "clamp(15px, 2vw, 18px)", color: T.forest, lineHeight: 1.4 }}>
+            {item.q}
+          </span>
+          {/* Chevron */}
+          <span style={{
+            flexShrink: 0, width: "28px", height: "28px", borderRadius: "50%",
+            background: open ? T.forest : T.bgAlt,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.28s ease",
+          }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke={open ? "#ffffff" : T.muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"
+              style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.28s ease" }}>
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
+        </button>
+        {open && (
+          <div style={{ paddingBottom: "28px" }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: T.muted, lineHeight: 1.85, margin: 0, maxWidth: "820px" }}>
+              {item.a}
+            </p>
+          </div>
+        )}
+      </div>
+    </Reveal>
+  );
+}
+
+function PartnerPage({ setPage }) {
+  return (
+    <>
+      {/* ── Page header ── */}
+      <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
+          <Reveal delay={0.05}><Eyebrow>Partner With Us</Eyebrow></Reveal>
+          <Reveal delay={0.12}>
+            <h1 style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
+              fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
+              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
+            }}>
+              A Partnership Built<br />
+              <span style={{ color: T.sage }}>to Last.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif", fontWeight: 300,
+              fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
+              lineHeight: 1.85, maxWidth: "560px",
+            }}>
+              Our process is straightforward, respectful of your time, and designed to build trust from day one. We move quickly, keep diligence focused and non-invasive, with emphasis on cultural fit and shared vision.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+      <Divider light />
+
+      {/* ── Process steps ── */}
+      <section style={{ background: T.bgPage, padding: `clamp(32px, 4vw, 52px) ${S.gutter}` }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: "28px" }}>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(28px, 3.8vw, 46px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12, margin: 0 }}>
+                Our Partnership Process
+              </h2>
+            </div>
+          </Reveal>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {processSteps.map((step, i) => (
+              <ProcessStep key={step.num} step={step} delay={i * 0.07} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <Divider />
+
+      {/* ── FAQ ── */}
+      <section style={{ background: T.bgAlt, padding: `clamp(32px, 4vw, 52px) ${S.gutter}` }}>
+        <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: "36px" }}>
+              <Eyebrow>FAQ</Eyebrow>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(28px, 3.8vw, 46px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12 }}>
+                Your Most Frequent Questions
+              </h2>
+            </div>
+          </Reveal>
+          <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+            {/* Top border */}
+            <div style={{ borderTop: `1px solid ${T.border}` }} />
+            {faqItems.map((item, i) => (
+              <FAQItem key={i} item={item} delay={i * 0.06} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <Divider />
+
+      {/* ── CTA ── */}
+      <section style={{ background: T.bgDark, padding: `${S.section} ${S.gutter}`, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
+          <Reveal>
+            <Eyebrow>Get In Touch</Eyebrow>
+            <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(32px, 5.5vw, 58px)", lineHeight: 1.1, letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 20px" }}>
+              Do You Want{" "}<span style={{ color: T.sage }}>To Join?</span>
+            </h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: "17px", color: "rgba(255,255,255,0.58)", lineHeight: 1.8, margin: "0 0 44px" }}>
+              We are always looking for exceptional businesses and founders to partner with.
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <CTABtn primary onClick={() => setPage("contact")}>Contact Us</CTABtn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      <Divider light />
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CONTACT US PAGE
+   ══════════════════════════════════════════════════════════════ */
+function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+
+  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, message: form.message }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setForm({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputStyle = {
+    width: "100%",
+    fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px",
+    color: T.forest, background: "#ffffff",
+    border: `1.5px solid ${T.sageBorder}`,
+    borderRadius: "10px", padding: "14px 18px",
+    outline: "none", transition: "border-color 0.2s",
+    lineHeight: 1.5,
+  };
+
+  return (
+    <>
+      {/* ── Page header ── */}
+      <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
+          <Reveal delay={0.05}><Eyebrow>Contact Us</Eyebrow></Reveal>
+          <Reveal delay={0.12}>
+            <h1 style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
+              fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
+              letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
+            }}>
+              Let's Start a<br />
+              <span style={{ color: T.sage }}>Conversation.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif", fontWeight: 300,
+              fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
+              lineHeight: 1.85, maxWidth: "520px",
+            }}>
+              If you are interested in exploring a partnership, or simply would like to know more, we would love to hear from you.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+      <Divider light />
+
+      {/* ── Form + Image ── */}
+      <section style={{ background: T.bgPage, padding: `${S.section} ${S.gutter}` }}>
+        <div className="contact-grid" style={{ maxWidth: S.maxW, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "stretch" }}>
+
+          {/* Left: Form */}
+          <Reveal delay={0.05}>
+            <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <Eyebrow>Send Us a Message</Eyebrow>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "clamp(26px, 3.5vw, 40px)", color: T.forest, letterSpacing: "-0.022em", lineHeight: 1.12, margin: "0 0 12px" }}>
+                Let's Talk
+              </h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.muted, lineHeight: 1.8, margin: "0 0 36px" }}>
+                Fill in the form and we will be in touch shortly.
+              </p>
+
+              {status === "success" ? (
+                <div style={{
+                  flex: 1, borderRadius: "16px", background: "rgba(121,164,126,0.08)",
+                  border: `1.5px solid ${T.sage}`,
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                  padding: "48px", textAlign: "center", gap: "16px",
+                }}>
+                  <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: T.sage, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="24" height="24"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "20px", color: T.forest, margin: 0 }}>Message Sent</h3>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.7 }}>Thank you for getting in touch. We will get back to you within one business day.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px", flex: 1 }}>
+                  {/* Name + Phone row */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                    <div>
+                      <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
+                        Full Name <span style={{ color: T.sage }}>*</span>
+                      </label>
+                      <input
+                        type="text" name="name" required
+                        value={form.name} onChange={handleChange}
+                        placeholder="Full Name"
+                        style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = T.sage}
+                        onBlur={e => e.target.style.borderColor = T.sageBorder}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel" name="phone"
+                        value={form.phone} onChange={handleChange}
+                        placeholder="Phone Number"
+                        style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = T.sage}
+                        onBlur={e => e.target.style.borderColor = T.sageBorder}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
+                      Email Address <span style={{ color: T.sage }}>*</span>
+                    </label>
+                    <input
+                      type="email" name="email" required
+                      value={form.email} onChange={handleChange}
+                      placeholder="Email Address"
+                      style={inputStyle}
+                      onFocus={e => e.target.style.borderColor = T.sage}
+                      onBlur={e => e.target.style.borderColor = T.sageBorder}
+                    />
+                  </div>
+
+                  {/* Message */}
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                    <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
+                      Your Message <span style={{ color: T.sage }}>*</span>
+                    </label>
+                    <textarea
+                      name="message" required
+                      value={form.message} onChange={handleChange}
+                      placeholder="Tell us about your business and what you're looking for..."
+                      rows={6}
+                      style={{ ...inputStyle, resize: "vertical", flex: 1, minHeight: "160px" }}
+                      onFocus={e => e.target.style.borderColor = T.sage}
+                      onBlur={e => e.target.style.borderColor = T.sageBorder}
+                    />
+                  </div>
+
+                  {status === "error" && (
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", color: "#c0392b", margin: 0 }}>
+                      Something went wrong. Please try again or email us directly.
+                    </p>
+                  )}
+
+                  {/* Submit */}
+                  <SubmitButton sending={status === "sending"} />
+                </form>
+              )}
+            </div>
+          </Reveal>
+
+          {/* Right: Image */}
+          <Reveal delay={0.15}>
+            <div style={{
+              borderRadius: "20px", overflow: "hidden",
+              boxShadow: "0 24px 64px rgba(35,51,41,0.16)",
+              height: "100%", minHeight: "520px",
+              position: "relative",
+            }}>
+              <img
+                src={contactBg}
+                alt="Plans and instruments on a desk"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      <Divider />
+    </>
+  );
+}
+
+function SubmitButton({ sending }) {
   const [h, setH] = useState(false);
   return (
     <button
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      type="submit"
+      disabled={sending}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
       style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "14px",
-        padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
-        transition: "all 0.22s ease",
-        background: primary
-          ? (h ? "#6d9472" : T.sage)
-          : (h ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.06)"),
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "15px",
+        padding: "15px 40px", borderRadius: "100px", cursor: sending ? "not-allowed" : "pointer",
+        border: "none", transition: "all 0.22s ease",
+        background: sending ? T.muted : (h ? "#4a7050" : T.forest),
         color: "#ffffff",
-        border: primary ? "none" : "1px solid rgba(255,255,255,0.22)",
-        backdropFilter: primary ? "none" : "blur(4px)",
+        alignSelf: "flex-start",
+        letterSpacing: "0.01em",
+        display: "flex", alignItems: "center", gap: "10px",
       }}
-    >{children}</button>
+    >
+      {sending ? (
+        <>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16" style={{ animation: "spin 1s linear infinite" }}>
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity="0.25"/>
+            <path d="M21 12a9 9 0 00-9-9"/>
+          </svg>
+          Sending…
+        </>
+      ) : (
+        <>
+          Send Message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </>
+      )}
+    </button>
   );
 }
 
 /* ── FOOTER ─────────────────────────────────────────────────── */
-function Footer() {
+function Footer({ setPage }) {
   return (
     <footer style={{
       background: T.bgDark,
       padding: `32px ${S.gutter}`,
-      display: "flex", alignItems: "center",
-      justifyContent: "space-between", flexWrap: "wrap", gap: "16px",
+      display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: "16px",
     }}>
-      <div style={{
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 800, fontSize: "18px", color: "#ffffff",
-      }}>Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span></div>
+      <button
+        onClick={() => setPage("home")}
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "18px", color: "#ffffff", background: "none", border: "none", cursor: "pointer", padding: 0, justifySelf: "start" }}
+      >
+        Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+      </button>
 
-      <div style={{ display: "flex", gap: "28px" }}>
-        {["Home", "About Us", "How to Partner"].map(l => (
-          <a key={l} href="#"
-            onMouseEnter={e => e.target.style.color = "rgba(255,255,255,0.85)"}
-            onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.42)"}
+      <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
+        {[
+          { label: "Home",           page: "home" },
+          { label: "About Us",       page: "about" },
+          { label: "How to Partner", page: "partner" },
+          { label: "Contact Us",     page: "contact" },
+        ].map(({ label, page }) => (
+          <button
+            key={page}
+            onClick={() => setPage(page)}
+            onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.85)"}
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.42)"}
             style={{
               fontFamily: "'Inter', sans-serif", fontSize: "13px", fontWeight: 400,
-              color: "rgba(255,255,255,0.42)", textDecoration: "none", transition: "color 0.2s",
+              color: "rgba(255,255,255,0.42)", background: "none", border: "none",
+              cursor: "pointer", padding: 0, transition: "color 0.2s",
             }}
-          >{l}</a>
+          >{label}</button>
         ))}
       </div>
 
-      <div style={{
-        fontFamily: "'Inter', sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.28)",
-      }}>© 2026 Kadence Safety. All rights reserved.</div>
+      <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.28)", textAlign: "right", justifySelf: "end" }}>
+        © 2026 Kadence Group Limited. All rights reserved.
+      </div>
     </footer>
   );
 }
 
 /* ── APP ────────────────────────────────────────────────────── */
 export default function App() {
+  const [currentPage, setCurrentPage] = useState("home");
+
+  const setPage = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <GlobalStyles />
-      <Nav />
-      <Hero />
-      <Mission />
-      <Focus />
-      <Benefits />
-      <CTA />
-      <Footer />
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
+      <Nav currentPage={currentPage} setPage={setPage} />
+
+      {currentPage === "home" && (
+        <>
+          <Hero setPage={setPage} />
+          <Mission />
+          <Focus />
+          <Benefits />
+          <HomeCTA setPage={setPage} />
+        </>
+      )}
+
+      {currentPage === "about" && (
+        <AboutPage setPage={setPage} />
+      )}
+
+      {currentPage === "partner" && (
+        <PartnerPage setPage={setPage} />
+      )}
+
+      {currentPage === "contact" && (
+        <ContactPage />
+      )}
+
+      <Footer setPage={setPage} />
     </>
   );
 }
