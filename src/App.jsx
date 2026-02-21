@@ -90,6 +90,12 @@ const GlobalStyles = () => (
         .founder-info { padding: 20px !important; }
       }
 
+      /* ── Form placeholder styling ── */
+      input::placeholder, textarea::placeholder {
+        color: ${T.muted};
+        opacity: 1;
+      }
+
       /* ── Mobile drawer ── */
       .mobile-drawer {
         position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
@@ -1254,7 +1260,7 @@ function ContactPage() {
     e.preventDefault();
     setStatus("sending");
     try {
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const res = await fetch("https://formspree.io/f/xeelrzqy", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, message: form.message }),
@@ -1308,70 +1314,49 @@ function ContactPage() {
                     <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="24" height="24"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
                   <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "20px", color: T.forest, margin: 0 }}>Message Sent</h3>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "15px", color: T.muted, margin: 0, lineHeight: 1.7 }}>Thank you for getting in touch. We will get back to you within one business day.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px", flex: 1 }}>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px", flex: 1 }}>
                   {/* Name + Phone row */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    <div>
-                      <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
-                        Full Name <span style={{ color: T.sage }}>*</span>
-                      </label>
-                      <input
-                        type="text" name="name" required
-                        value={form.name} onChange={handleChange}
-                        placeholder="Full Name"
-                        style={inputStyle}
-                        onFocus={e => e.target.style.borderColor = T.sage}
-                        onBlur={e => e.target.style.borderColor = T.sageBorder}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel" name="phone"
-                        value={form.phone} onChange={handleChange}
-                        placeholder="Phone Number"
-                        style={inputStyle}
-                        onFocus={e => e.target.style.borderColor = T.sage}
-                        onBlur={e => e.target.style.borderColor = T.sageBorder}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
-                      Email Address <span style={{ color: T.sage }}>*</span>
-                    </label>
                     <input
-                      type="email" name="email" required
-                      value={form.email} onChange={handleChange}
-                      placeholder="Email Address"
+                      type="text" name="name" required
+                      value={form.name} onChange={handleChange}
+                      placeholder="Full Name *"
+                      style={inputStyle}
+                      onFocus={e => e.target.style.borderColor = T.sage}
+                      onBlur={e => e.target.style.borderColor = T.sageBorder}
+                    />
+                    <input
+                      type="tel" name="phone"
+                      value={form.phone} onChange={handleChange}
+                      placeholder="Phone Number"
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = T.sage}
                       onBlur={e => e.target.style.borderColor = T.sageBorder}
                     />
                   </div>
 
+                  {/* Email */}
+                  <input
+                    type="email" name="email" required
+                    value={form.email} onChange={handleChange}
+                    placeholder="Email Address *"
+                    style={inputStyle}
+                    onFocus={e => e.target.style.borderColor = T.sage}
+                    onBlur={e => e.target.style.borderColor = T.sageBorder}
+                  />
+
                   {/* Message */}
-                  <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                    <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "13px", color: T.forest, display: "block", marginBottom: "8px", letterSpacing: "0.02em" }}>
-                      Your Message <span style={{ color: T.sage }}>*</span>
-                    </label>
-                    <textarea
-                      name="message" required
-                      value={form.message} onChange={handleChange}
-                      placeholder="Tell us about your business and what you're looking for..."
-                      rows={6}
-                      style={{ ...inputStyle, resize: "vertical", flex: 1, minHeight: "160px" }}
-                      onFocus={e => e.target.style.borderColor = T.sage}
-                      onBlur={e => e.target.style.borderColor = T.sageBorder}
-                    />
-                  </div>
+                  <textarea
+                    name="message" required
+                    value={form.message} onChange={handleChange}
+                    placeholder="Your Message *"
+                    rows={6}
+                    style={{ ...inputStyle, resize: "vertical", flex: 1, minHeight: "160px" }}
+                    onFocus={e => e.target.style.borderColor = T.sage}
+                    onBlur={e => e.target.style.borderColor = T.sageBorder}
+                  />
 
                   {status === "error" && (
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", color: "#c0392b", margin: 0 }}>
@@ -1455,12 +1440,27 @@ function Footer({ setPage }) {
       padding: `32px ${S.gutter}`,
       display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: "16px",
     }}>
-      <button
-        onClick={() => setPage("home")}
-        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "18px", color: "#ffffff", background: "none", border: "none", cursor: "pointer", padding: 0, justifySelf: "start" }}
-      >
-        Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
-      </button>
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px", justifySelf: "start" }}>
+        <button
+          onClick={() => setPage("home")}
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "18px", color: "#ffffff", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+        >
+          Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+        </button>
+        <a
+          href="mailto:contact@kadencegroup.co.uk"
+          style={{
+            fontFamily: "'Inter', sans-serif", fontSize: "13px", fontWeight: 400,
+            color: "rgba(255,255,255,0.42)",
+            textDecoration: "none",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.85)"}
+          onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.42)"}
+        >
+          contact@kadencegroup.co.uk
+        </a>
+      </div>
 
       <div style={{ display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
         {[

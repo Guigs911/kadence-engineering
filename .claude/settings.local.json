@@ -7,7 +7,11 @@
       "Bash(powershell -ExecutionPolicy Bypass -Command \"cd ''C:\\\\Users\\\\guill\\\\kadence-safety''; npx --yes acorn --ecma2020 --module src/App.jsx 2>&1 | Select-Object -Last 20\")",
       "Bash(powershell -ExecutionPolicy Bypass -Command \"Get-Content ''C:\\\\Users\\\\guill\\\\kadence-safety\\\\src\\\\App.jsx'' | node --input-type=module 2>&1 | Select-Object -First 20\")",
       "Bash(powershell -ExecutionPolicy Bypass -Command:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)"
     ]
   }
 }
