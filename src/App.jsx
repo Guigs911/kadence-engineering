@@ -83,6 +83,7 @@ const GlobalStyles = () => (
         /* Footer: stack on mobile */
         footer { grid-template-columns: 1fr !important; gap: 20px !important; text-align: center !important; }
         footer button { justify-self: center !important; }
+        footer > div:first-child { justify-self: center !important; align-items: center !important; }
         footer div:last-child { justify-self: center !important; text-align: center !important; }
         /* Process steps: tighter */
         .process-step-content { flex-direction: column !important; }
