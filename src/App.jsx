@@ -243,7 +243,7 @@ function Nav({ currentPage, setPage }) {
             color: menuOpen ? "#ffffff" : logoColor, transition: "color 0.4s", cursor: "pointer",
           }}
         >
-          Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
         </div>
 
         {/* Desktop links */}
@@ -1445,7 +1445,7 @@ function Footer({ setPage }) {
           onClick={() => setPage("home")}
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "18px", color: "#ffffff", background: "none", border: "none", cursor: "pointer", padding: 0 }}
         >
-          Kadence<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
         </button>
         <a
           href="mailto:contact@kadencegroup.co.uk"
