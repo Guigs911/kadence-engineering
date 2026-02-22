@@ -11,7 +11,9 @@
       "Bash(curl:*)",
       "Bash(netstat:*)",
       "Bash(findstr:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(copy:*)",
+      "Bash(Copy-Item \"C:\\\\Users\\\\guill\\\\OneDrive - Kadence\\\\Kadence Group\\\\6. Brand & Identity\\\\Logo\\\\Favicon\\\\Favicon.png\" \"C:\\\\Users\\\\guill\\\\kadence-safety\\\\public\\\\favicon.png\")"
     ]
   }
 }
