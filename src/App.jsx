@@ -1116,12 +1116,12 @@ function FAQItem({ item, delay }) {
         <button
           onClick={() => setOpen(o => !o)}
           style={{
-            width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+            width: "100%", display: "flex", alignItems: "flex-start", justifyContent: "space-between",
             padding: "28px 0", background: "none", border: "none", cursor: "pointer",
             textAlign: "left", gap: "16px",
           }}
         >
-          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "clamp(15px, 2vw, 18px)", color: T.forest, lineHeight: 1.4 }}>
+          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "clamp(15px, 2vw, 18px)", color: T.forest, lineHeight: 1.6, display: "block", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale", overflow: "visible" }}>
             {item.q}
           </span>
           {/* Chevron */}
