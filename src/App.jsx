@@ -761,7 +761,7 @@ function AboutPage({ setPage }) {
               fontSize: "clamp(36px, 6vw, 68px)", lineHeight: 1.08,
               letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 16px", whiteSpace: "nowrap",
             }}>
-              Our Founding <span style={{ color: T.sage }}>Team.</span>
+              Our Founding <span style={{ color: T.sage }}>Team</span>
             </h1>
           </Reveal>
         </div>
@@ -1167,7 +1167,7 @@ function PartnerPage({ setPage }) {
               letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 24px", maxWidth: "720px",
             }}>
               A <span style={{ color: T.sage }}>Partnership</span> Built<br />
-              to Last.
+              to Last
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
