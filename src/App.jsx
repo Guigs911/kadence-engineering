@@ -445,7 +445,7 @@ function Hero({ setPage }) {
 
         <div style={{ position: "relative", maxWidth: "780px" }}>
           <Reveal delay={0.1}>
-            <TwoToneH1 line1="Redefining" line2="Workplace Safety" />
+            <TwoToneH1 line1="Redefining" line2="Health & Safety" />
           </Reveal>
           <Reveal delay={0.2}>
             <p style={{
@@ -453,7 +453,7 @@ function Hero({ setPage }) {
               fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
               lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "640px",
             }}>
-              Building a national leader in workplace safety, compliance and training.
+              Building a national leader in safety, compliance and training.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
@@ -497,13 +497,13 @@ function Mission() {
                 lineHeight: 1.12, letterSpacing: "-0.022em",
                 color: T.forest, margin: "0 0 32px",
               }}>
-                Raising the Standards<br />of Workplace Safety
+                Raising the standards of safety for people, buildings and the environment
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px" }}>
                 <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
-                  We want to bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for clients seeking to protect their people, assets, and the environment.
+                  We want to bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for clients seeking to protect their workforce, assets, and the environment.
                 </p>
               </div>
             </Reveal>
@@ -1485,7 +1485,8 @@ function Footer({ setPage }) {
       </div>
 
       <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.28)", textAlign: "right", justifySelf: "end" }}>
-        © 2026 Kadence Group Limited. All rights reserved.
+        <div>© 2026 Kadence Group Limited. All rights reserved.</div>
+        <div>Company number: 17044397</div>
       </div>
     </footer>
   );
