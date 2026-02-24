@@ -445,7 +445,7 @@ function Hero({ setPage }) {
 
         <div style={{ position: "relative", maxWidth: "780px" }}>
           <Reveal delay={0.1}>
-            <TwoToneH1 line1="Redefining" line2="Health & Safety" />
+            <TwoToneH1 line1="Redefining" line2="Workplace Safety" />
           </Reveal>
           <Reveal delay={0.2}>
             <p style={{
@@ -453,7 +453,7 @@ function Hero({ setPage }) {
               fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
               lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "640px",
             }}>
-              Building a national leader in Health &amp; Safety services in the UK.
+              Building a national leader in workplace safety, compliance and training.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
