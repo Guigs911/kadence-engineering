@@ -244,7 +244,7 @@ function Nav({ currentPage, setPage }) {
             color: menuOpen ? "#ffffff" : logoColor, transition: "color 0.4s", cursor: "pointer",
           }}
         >
-          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Engineering</span>
         </div>
 
         {/* Desktop links */}
@@ -453,7 +453,7 @@ function Hero({ setPage }) {
               fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
               lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "640px",
             }}>
-              Building a national leader in engineering services to mission-critical infrastructure.
+              Building a national leader in mission-critical engineering services.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
@@ -497,13 +497,13 @@ function Mission() {
                 lineHeight: 1.12, letterSpacing: "-0.022em",
                 color: T.forest, margin: "0 0 32px",
               }}>
-                Delivering engineering excellence to build, maintain and future-proof critical infrastructure
+                Delivering engineering excellence to build, maintain and protect critical infrastructure
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
                 <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
-                  We bring together the best entrepreneurs in engineering services to create the partner of choice for owners/operators seeking to design, build, maintain, and upgrade their mission-critical infrastructure.
+                  We bring together the best entrepreneurs in engineering services to create the partner of choice for owners and operators seeking to design, build, maintain, and upgrade their mission-critical infrastructure.
                 </p>
                 <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
                   We acquire, support, and grow specialist firms through shared resources, technology, and capital, in collaboration with local leaders to deliver engineering excellence at scale.
@@ -530,19 +530,19 @@ const focusItems = [
     num: "01",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>),
     title: "Energy Transition",
-    body: "Supporting the UK's shift to clean energy through onshore and offshore wind, solar, and battery energy storage solutions (BESS).",
+    body: "Supporting the UK's shift to clean energy through onshore and offshore wind, solar, battery energy storage solutions, and other low-carbon technologies.",
   },
   {
     num: "02",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>),
     title: "Grid Infrastructure",
-    body: "Connecting and maintaining the power network – from grid connections and substation builds to ongoing maintenance and upgrades.",
+    body: "Connecting and maintaining the power network: grid connections, substation builds, ongoing maintenance, and upgrades.",
   },
   {
     num: "03",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>),
     title: "Data Centres",
-    body: "Designing and maintaining the facilities that power the digital economy – ensuring uptime, operational efficiency, and resilience at scale.",
+    body: "Designing and maintaining the facilities that power the digital economy, ensuring uptime, operational efficiency, and resilience at scale.",
   },
   {
     num: "04",
@@ -1449,7 +1449,7 @@ function Footer({ setPage }) {
           onClick={() => setPage("home")}
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: "18px", color: "#ffffff", background: "none", border: "none", cursor: "pointer", padding: 0 }}
         >
-          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Safety</span>
+          Kadence Group<span style={{ color: T.sage, fontWeight: 600 }}> Engineering</span>
         </button>
         <a
           href="mailto:contact@kadencegroup.co.uk"
