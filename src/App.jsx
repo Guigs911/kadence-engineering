@@ -5,23 +5,23 @@ import guillaumeHeadshot from "./assets/guillaume-headshot.jpg";
 import gianmarcoHeadshot from "./assets/gianmarco-headshot.jpg";
 
 /* ─────────────────────────────────────────────────────────────
-   DESIGN SYSTEM – Kadence Safety
+   DESIGN SYSTEM – Kadence Engineering
    Fonts: Plus Jakarta Sans (headings) + Inter (body)
-   Palette: warm off-white, forest green, sage, periwinkle
+   Palette: ink black, pacific blue, taupe grey, dust grey
    ──────────────────────────────────────────────────────────── */
 const T = {
-  bgPage:     "#F4F5F2",
-  bgAlt:      "#ECEEE9",
-  bgDark:     "#233329",
+  bgPage:     "#F2F4F5",
+  bgAlt:      "#E9ECEE",
+  bgDark:     "#001D29",
   bgCard:     "#FFFFFF",
-  forest:     "#233329",
-  sage:       "#79A47E",
-  periwinkle: "#8B95C9",
-  text:       "#233329",
-  muted:      "#6B7B6E",
+  forest:     "#001D29",
+  sage:       "#2E8B97",
+  periwinkle: "#685762",
+  text:       "#001D29",
+  muted:      "#685762",
   mutedLight: "rgba(255,255,255,0.58)",
-  border:     "rgba(35,51,41,0.1)",
-  sageBorder: "rgba(121,164,126,0.35)",
+  border:     "rgba(0,29,41,0.1)",
+  sageBorder: "rgba(46,139,151,0.35)",
 };
 
 const S = {
@@ -100,7 +100,7 @@ const GlobalStyles = () => (
       /* ── Mobile drawer ── */
       .mobile-drawer {
         position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
-        background: rgba(35,51,41,0.98);
+        background: rgba(0,29,41,0.98);
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
         gap: 32px; z-index: 199;
@@ -227,10 +227,10 @@ function Nav({ currentPage, setPage }) {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: `0 ${S.gutter}`, height: "72px",
         background: menuOpen
-          ? "rgba(35,51,41,0.98)"
+          ? "rgba(0,29,41,0.98)"
           : isContact
-            ? "rgba(35,51,41,0.97)"
-            : (scrolled ? "rgba(244,245,242,0.97)" : "transparent"),
+            ? "rgba(0,29,41,0.97)"
+            : (scrolled ? "rgba(242,244,245,0.97)" : "transparent"),
         backdropFilter: (!isContact && scrolled && !menuOpen) ? "blur(16px)" : "none",
         borderBottom: (isContact || !scrolled || menuOpen) ? "1px solid rgba(255,255,255,0.18)" : `1px solid ${T.border}`,
         transition: "background 0.4s ease, border-color 0.4s ease",
@@ -375,7 +375,7 @@ function PillButton({ children, primary = false, onClick }) {
         padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
         transition: "all 0.22s ease",
         background: primary
-          ? (h ? "#6d9472" : T.sage)
+          ? (h ? "#257580" : T.sage)
           : (h ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.07)"),
         color: "#ffffff",
         border: "1px solid rgba(255,255,255,0.22)",
@@ -398,7 +398,7 @@ function CTABtn({ children, primary = false, onClick }) {
         padding: "13px 34px", borderRadius: "100px", cursor: "pointer",
         transition: "all 0.22s ease",
         background: primary
-          ? (h ? "#6d9472" : T.sage)
+          ? (h ? "#257580" : T.sage)
           : (h ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)"),
         color: "#ffffff",
         border: "1.5px solid rgba(255,255,255,0.45)",
@@ -432,20 +432,20 @@ function Hero({ setPage }) {
         }} />
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(165deg, rgba(35,51,41,0.82) 0%, rgba(28,42,33,0.78) 50%, rgba(20,32,24,0.88) 100%)",
+          background: "linear-gradient(165deg, rgba(0,29,41,0.82) 0%, rgba(0,23,33,0.78) 50%, rgba(0,17,25,0.88) 100%)",
           pointerEvents: "none",
         }} />
         <div style={{
           position: "absolute", top: "30%", left: "50%",
           transform: "translate(-50%, -50%)",
           width: "900px", height: "600px",
-          background: "radial-gradient(ellipse, rgba(121,164,126,0.07) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse, rgba(46,139,151,0.07) 0%, transparent 65%)",
           pointerEvents: "none",
         }} />
 
         <div style={{ position: "relative", maxWidth: "780px" }}>
           <Reveal delay={0.1}>
-            <TwoToneH1 line1="Redefining" line2="Health & Safety" />
+            <TwoToneH1 line1="Expert engineering" line2="where it matters most" />
           </Reveal>
           <Reveal delay={0.2}>
             <p style={{
@@ -453,7 +453,7 @@ function Hero({ setPage }) {
               fontSize: "clamp(16px, 2vw, 18px)", color: "rgba(255,255,255,0.6)",
               lineHeight: 1.85, margin: "0 auto 48px", maxWidth: "640px",
             }}>
-              Building a national leader in safety, compliance and training.
+              Building a national leader in engineering services to mission-critical infrastructure.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
@@ -497,20 +497,23 @@ function Mission() {
                 lineHeight: 1.12, letterSpacing: "-0.022em",
                 color: T.forest, margin: "0 0 32px",
               }}>
-                Raising the standards of safety for people, buildings and the environment
+                Delivering engineering excellence to build, maintain and future-proof critical infrastructure
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px" }}>
+              <div style={{ borderLeft: `3px solid ${T.sage}`, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
                 <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
-                  We want to bring together the best entrepreneurs in Health &amp; Safety, Training, and Compliance services to create the partner of choice for clients seeking to protect their workforce, assets, and the environment.
+                  We bring together the best entrepreneurs in engineering services to create the partner of choice for owners/operators seeking to design, build, maintain, and upgrade their mission-critical infrastructure.
+                </p>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: "16px", color: T.forest, lineHeight: 1.8, margin: 0 }}>
+                  We acquire, support, and grow specialist firms through shared resources, technology, and capital, in collaboration with local leaders to deliver engineering excellence at scale.
                 </p>
               </div>
             </Reveal>
           </div>
 
           <Reveal delay={0.2}>
-            <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 24px 64px rgba(35,51,41,0.14)", aspectRatio: "4/5" }}>
+            <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 24px 64px rgba(0,29,41,0.14)", aspectRatio: "4/5" }}>
               <img src={missionImg} alt="Health and safety professional" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
           </Reveal>
@@ -526,26 +529,26 @@ const focusItems = [
   {
     num: "01",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>),
-    title: "Health & Safety Services",
-    body: "Helping businesses maintain safe working environments and protect their people across industries.",
+    title: "Energy Transition",
+    body: "Supporting the UK's shift to clean energy through onshore and offshore wind, solar, and battery energy storage solutions (BESS).",
   },
   {
     num: "02",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>),
-    title: "Compliance Services",
-    body: "Ensuring organisations meet regulatory standards and maintain ongoing compliance with evolving legislation.",
+    title: "Grid Infrastructure",
+    body: "Connecting and maintaining the power network – from grid connections and substation builds to ongoing maintenance and upgrades.",
   },
   {
     num: "03",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>),
-    title: "Training & Accreditation",
-    body: "Professional development programmes and certification services to upskill teams and ensure industry compliance.",
+    title: "Data Centres",
+    body: "Designing and maintaining the facilities that power the digital economy – ensuring uptime, operational efficiency, and resilience at scale.",
   },
   {
     num: "04",
     icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>),
-    title: "Risk Management & ESG Consulting",
-    body: "Advisory services to identify, assess, and mitigate operational, environmental, social, and governance risks.",
+    title: "Water Infrastructure",
+    body: "Delivering essential water and wastewater infrastructure, from treatment and distribution to network maintenance and regulatory compliance.",
   },
 ];
 
@@ -559,7 +562,7 @@ function FocusCard({ item, delay }) {
           borderRadius: "20px", padding: "32px 32px 38px",
           background: T.bgCard,
           border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
-          boxShadow: h ? "0 12px 40px rgba(35,51,41,0.10)" : "0 2px 12px rgba(35,51,41,0.05)",
+          boxShadow: h ? "0 12px 40px rgba(0,29,41,0.10)" : "0 2px 12px rgba(0,29,41,0.05)",
           transition: "all 0.32s ease", cursor: "default",
           position: "relative", overflow: "hidden", height: "100%",
         }}
@@ -577,7 +580,7 @@ function FocusCard({ item, delay }) {
         </div>
         <div style={{
           position: "absolute", top: 0, right: 0, width: "140px", height: "140px",
-          background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)",
+          background: "radial-gradient(circle at top right, rgba(46,139,151,0.08), transparent 65%)",
           opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none",
         }} />
       </div>
@@ -651,7 +654,7 @@ function BenefitRow({ b, delay, last }) {
       >
         <div style={{
           flexShrink: 0, width: "48px", height: "48px", borderRadius: "50%",
-          background: h ? T.sage : "rgba(121,164,126,0.10)",
+          background: h ? T.sage : "rgba(46,139,151,0.10)",
           border: `1px solid ${h ? T.sage : T.sageBorder}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           color: h ? "#ffffff" : T.sage, transition: "all 0.30s ease", marginTop: "2px",
@@ -686,7 +689,7 @@ function Benefits() {
           <div style={{ position: "relative" }}>
             <div style={{
               position: "absolute", left: "-28px", top: "24px", bottom: "24px", width: "1px",
-              background: `linear-gradient(to bottom, rgba(121,164,126,0.0) 0%, ${T.sage} 12%, ${T.sage} 88%, rgba(121,164,126,0.0) 100%)`,
+              background: `linear-gradient(to bottom, rgba(46,139,151,0.0) 0%, ${T.sage} 12%, ${T.sage} 88%, rgba(46,139,151,0.0) 100%)`,
             }} />
             {benefits.map((b, i) => (
               <BenefitRow key={i} b={b} delay={i * 0.08} last={i === benefits.length - 1} />
@@ -709,8 +712,8 @@ function HomeCTA({ setPage }) {
         position: "relative", overflow: "hidden",
       }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(139,149,201,0.09) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(46,139,151,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(104,87,98,0.09) 0%, transparent 65%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
           <Reveal>
@@ -752,7 +755,7 @@ function AboutPage({ setPage }) {
       {/* ── Team header ── */}
       <section style={{ background: T.bgDark, padding: `100px ${S.gutter} 40px`, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(46,139,151,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
           <Reveal delay={0.05}><Eyebrow>The Team</Eyebrow></Reveal>
           <Reveal delay={0.12}>
@@ -827,7 +830,7 @@ function AboutPage({ setPage }) {
         position: "relative", overflow: "hidden",
       }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(46,139,151,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
           <Reveal>
             <Eyebrow>Careers</Eyebrow>
@@ -868,7 +871,7 @@ function ValueCard({ v, delay }) {
           borderRadius: "20px", padding: "32px",
           background: T.bgCard,
           border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
-          boxShadow: h ? "0 12px 40px rgba(35,51,41,0.10)" : "0 2px 12px rgba(35,51,41,0.05)",
+          boxShadow: h ? "0 12px 40px rgba(0,29,41,0.10)" : "0 2px 12px rgba(0,29,41,0.05)",
           transition: "all 0.32s ease", cursor: "default",
           position: "relative", overflow: "hidden", height: "100%",
         }}
@@ -876,7 +879,7 @@ function ValueCard({ v, delay }) {
         <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "18px", color: T.sage, margin: "0 0 10px", lineHeight: 1.3 }}>{v.title}</h3>
         <div style={{ width: h ? "48px" : "32px", height: "3px", background: T.sage, borderRadius: "2px", marginBottom: "16px", transition: "width 0.32s ease" }} />
         <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "15px", color: T.forest, margin: 0, lineHeight: 1.8 }}>{v.body}</p>
-        <div style={{ position: "absolute", top: 0, right: 0, width: "120px", height: "120px", background: "radial-gradient(circle at top right, rgba(121,164,126,0.08), transparent 65%)", opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: 0, right: 0, width: "120px", height: "120px", background: "radial-gradient(circle at top right, rgba(46,139,151,0.08), transparent 65%)", opacity: h ? 1 : 0.4, transition: "opacity 0.4s", pointerEvents: "none" }} />
       </div>
     </Reveal>
   );
@@ -918,13 +921,13 @@ function FounderCard({ name, role, bio, linkedin, photo, delay }) {
         borderRadius: "20px", overflow: "hidden",
         border: `1.5px solid ${T.sageBorder}`,
         background: T.bgCard,
-        boxShadow: "0 4px 24px rgba(35,51,41,0.07)",
+        boxShadow: "0 4px 24px rgba(0,29,41,0.07)",
         height: "100%", display: "flex", flexDirection: "column",
       }}>
         {/* Avatar: photo or placeholder */}
         <div style={{
           width: "100%", aspectRatio: "4/3",
-          background: `linear-gradient(135deg, ${T.bgAlt} 0%, rgba(121,164,126,0.12) 100%)`,
+          background: `linear-gradient(135deg, ${T.bgAlt} 0%, rgba(46,139,151,0.12) 100%)`,
           display: "flex", alignItems: "center", justifyContent: "center",
           position: "relative", overflow: "hidden",
         }}>
@@ -934,7 +937,7 @@ function FounderCard({ name, role, bio, linkedin, photo, delay }) {
             <div style={{ textAlign: "center" }}>
               <div style={{
                 width: "80px", height: "80px", borderRadius: "50%",
-                background: "rgba(121,164,126,0.18)",
+                background: "rgba(46,139,151,0.18)",
                 border: `2px solid ${T.sageBorder}`,
                 margin: "0 auto 12px",
                 display: "flex", alignItems: "center", justifyContent: "center",
@@ -1075,7 +1078,7 @@ function ProcessStep({ step, delay }) {
           borderRadius: "14px",
           background: h ? T.bgCard : "transparent",
           border: `1.5px solid ${h ? T.sage : T.sageBorder}`,
-          boxShadow: h ? "0 8px 32px rgba(35,51,41,0.09)" : "0 1px 4px rgba(35,51,41,0.04)",
+          boxShadow: h ? "0 8px 32px rgba(0,29,41,0.09)" : "0 1px 4px rgba(0,29,41,0.04)",
           transition: "all 0.32s ease", cursor: "default",
         }}
       >
@@ -1083,7 +1086,7 @@ function ProcessStep({ step, delay }) {
         <div style={{
           flexShrink: 0,
           width: "36px", height: "36px", borderRadius: "50%",
-          background: h ? T.forest : "rgba(35,51,41,0.08)",
+          background: h ? T.forest : "rgba(0,29,41,0.08)",
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "background 0.32s ease",
         }}>
@@ -1157,7 +1160,7 @@ function PartnerPage({ setPage }) {
       {/* ── Page header ── */}
       <section style={{ background: T.bgDark, padding: `140px ${S.gutter} 100px`, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(121,164,126,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "900px", height: "300px", background: "radial-gradient(ellipse, rgba(46,139,151,0.14) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: S.maxW, margin: "0 auto", position: "relative" }}>
           <Reveal delay={0.05}><Eyebrow>Partner With Us</Eyebrow></Reveal>
           <Reveal delay={0.12}>
@@ -1227,7 +1230,7 @@ function PartnerPage({ setPage }) {
       {/* ── CTA ── */}
       <section style={{ background: T.bgDark, padding: `${S.section} ${S.gutter}`, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(121,164,126,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "280px", background: "radial-gradient(ellipse, rgba(46,139,151,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center", position: "relative" }}>
           <Reveal>
             <Eyebrow>Get In Touch</Eyebrow>
@@ -1306,7 +1309,7 @@ function ContactPage() {
 
               {status === "success" ? (
                 <div style={{
-                  flex: 1, borderRadius: "16px", background: "rgba(121,164,126,0.08)",
+                  flex: 1, borderRadius: "16px", background: "rgba(46,139,151,0.08)",
                   border: `1.5px solid ${T.sage}`,
                   display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                   padding: "48px", textAlign: "center", gap: "16px",
@@ -1376,7 +1379,7 @@ function ContactPage() {
           <Reveal delay={0.15} style={{ display: "contents" }}>
             <div className="contact-image" style={{
               borderRadius: "20px", overflow: "hidden",
-              boxShadow: "0 24px 64px rgba(35,51,41,0.16)",
+              boxShadow: "0 24px 64px rgba(0,29,41,0.16)",
               height: "100%", minHeight: "520px",
               position: "relative",
             }}>
@@ -1406,7 +1409,7 @@ function SubmitButton({ sending }) {
         fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: "15px",
         padding: "15px 40px", borderRadius: "100px", cursor: sending ? "not-allowed" : "pointer",
         border: "none", transition: "all 0.22s ease",
-        background: sending ? T.muted : (h ? "#4a7050" : T.forest),
+        background: sending ? T.muted : (h ? "#001D29" : T.forest),
         color: "#ffffff",
         alignSelf: "flex-start",
         letterSpacing: "0.01em",
